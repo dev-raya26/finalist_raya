@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Building;
 use App\Models\Room;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class BuildingController extends Controller
 {
@@ -33,7 +34,7 @@ class BuildingController extends Controller
     }
 
         Building::create([
-            'landlord_id' => 2,
+            'landlord_id' => Auth::user()->id,
             'room_name' => $request->room_name,
             'location' => $request->location,
             'description' => $request->description,

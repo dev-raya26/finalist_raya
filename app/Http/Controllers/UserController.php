@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\SystemUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index(){
-        $users = SystemUser::latest()->where('role','landload')->get();
+        if(Auth::user()->role=="landload"){
+        $users = SystemUser::latest()->where('role','=','customer')->get();
+        }elseif(Auth::user()->role=="admin"){
+        $users = SystemUser::latest()->where('role','!=','admin')->get();}
         return view("registration",compact('users'));
     }
       public function store(Request $request)

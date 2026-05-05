@@ -5,41 +5,55 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
-    <style>
-        .auth-wrapper{
-            height:100vh;
-            display:flex;
-        }
+ <style>
+    body{
+        margin:0;
+        padding:0;
+        height:100vh;
+        background: url('{{ asset("images/img11.jpeg") }}') no-repeat center center;
+        background-size: cover;
+    }
 
-        
+    .auth-wrapper{
+        height:100vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        position:relative;
+    }
 
-        .auth-left::before{
-            content:"";
-            position:absolute;
-            width:100%;
-            height:100%;
-            background:rgba(0,0,0,0.6);
-        }
+    /* OVERLAY YA GIZA JUU YA PICHA */
+    .auth-wrapper::before{
+        content:"";
+        position:absolute;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.5);
+        z-index:1;
+    }
 
-        .auth-right{
-            flex:1;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            background:#f8f9fa;
-            overflow:auto;
-            padding:20px;
-        }
+    .auth-right{
+        position:relative;
+        z-index:2;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        width:100%;
+        padding:20px;
+        background:transparent; /* muhimu sana */
+    }
 
-        .register-box{
-            width:90%;
-            max-width:700px;
-            background:#fff;
-            padding:30px;
-            border-radius:12px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.1);
-        }
-    </style>
+    .register-box{
+        width:90%;
+        max-width:700px;
+        background:#fff;
+        padding:30px;
+        border-radius:12px;
+        box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    }
+</style>
 </head>
 
 <body>

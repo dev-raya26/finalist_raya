@@ -18,7 +18,7 @@ class LoginController extends Controller
         return view("signup");
     }
     public function home(){
-    $rooms = Room::with('building.landlord')->get();
+    $rooms = Room::with('building.landlord')->where('status','!=','booked')->get();
     return view("welcome", compact('rooms'));
 }
     public function dashboard(){

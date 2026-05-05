@@ -7,19 +7,20 @@
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 
     <style>
+        body{
+            margin:0;
+            padding:0;
+            height:100vh;
+            background: url('{{ asset("images/img11.jpeg") }}') no-repeat center center;
+            background-size: cover;
+        }
+
         .auth-wrapper{
             height:100vh;
             display:flex;
-        }
-
-      
-
-        .auth-right{
-            flex:1;
-            display:flex;
-            align-items:center;
             justify-content:center;
-            background:#f8f9fa;
+            align-items:center;
+            background: rgba(0,0,0,0.4); 
         }
 
         .login-box{
@@ -27,7 +28,7 @@
             background:#fff;
             padding:30px;
             border-radius:12px;
-            box-shadow:0 10px 30px rgba(0,0,0,0.1);
+            box-shadow:0 10px 30px rgba(0,0,0,0.2);
         }
     </style>
 </head>
@@ -36,35 +37,28 @@
 
 <div class="auth-wrapper">
 
-  
+    <div class="login-box">
+        <h3 class="text-center mb-4">Login</h3>
 
-    <!-- RIGHT FORM -->
-    <div class="auth-right">
+        <form action="{{ route('login') }}" method="POST">
+            @csrf
 
-        <div class="login-box">
-            <h3 class="text-center mb-4">Login</h3>
+            <div class="mb-3">
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" placeholder="Enter email">
+            </div>
 
-            <form action="{{ route('login') }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label>Email</label>
-                    <input type="email" name="email" class="form-control" placeholder="Enter email">
-                </div>
+            <div class="mb-3">
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" placeholder="Enter password">
+            </div>
 
-                <div class="mb-3">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="Enter password">
-                </div>
+            <button class="btn btn-primary w-100" type="submit">Login</button>
 
-                <button class="btn btn-primary w-100" type="submit">Login</button>
-
-                <p class="text-center mt-3">
-                    No account? <a href="{{ route('home') }}">home</a>
-                </p>
-            </form>
-
-        </div>
-
+            <p class="text-center mt-3">
+                No account? <a href="{{ route('home') }}">home</a>
+            </p>
+        </form>
     </div>
 
 </div>

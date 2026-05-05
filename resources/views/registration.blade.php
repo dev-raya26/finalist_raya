@@ -7,9 +7,11 @@
         <h3>Users Management</h3>
 
         <!-- BUTTON YA KUFUNGUA MODAL -->
+        @if(Auth::user()->role=="admin")
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#userModal">
             + Add User
         </button>
+        @endif
 
         <div class="user-list">
            <table class="table table-striped">

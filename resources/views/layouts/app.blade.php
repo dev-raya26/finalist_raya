@@ -315,6 +315,12 @@ li a{
             </a>
         </li>
         <li class="nav-item mb-2">
+            <a href="{{ route('reguser.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+                <i class="fa fa-users"></i>
+                Ternants 
+            </a>
+        </li>
+        <li class="nav-item mb-2">
             <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-calendar-check"></i>
                 Bookings

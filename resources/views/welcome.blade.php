@@ -25,7 +25,7 @@
 <style>
 .hero-section {
     height: 90vh;
-    background: url('{{ asset("assets/img/banner/banner-three.png") }}') no-repeat center center/cover;
+    background: url('{{ asset("images/img11.jpeg") }}') no-repeat center center/cover;
     position: relative;
 }
 
@@ -47,6 +47,47 @@
 .typing-text {
     font-size: 45px;
     font-weight: bold;
+}
+.theme_common_box_two{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* IMAGE SIZE SAWA */
+.theme_two_box_img{
+    width: 100%;
+    height: 220px; /* unaweza badili */
+    overflow: hidden;
+}
+
+.theme_two_box_img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* muhimu sana */
+}
+
+/* CONTENT IKAE SAWA */
+.theme_two_box_content{
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* TITLE ISIPANUKE SANA */
+.theme_two_box_content h4{
+    min-height: 50px;
+}
+
+/* PRICE IBANWE CHINI */
+.theme_two_box_content h3{
+    margin-top: auto;
 }
 </style>
 <body>
@@ -114,14 +155,14 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-12">
                     <div class="section_heading_center">
-                        <h2>Our best promotional tours</h2>
+                        <h2>Jisajili sasa tukuhudumie</h2>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="promotional_tour_slider owl-theme owl-carousel dot_style">
-                        {{-- @foreach($rooms as $room)
+                        @foreach($rooms as $room)
 
 <div class="theme_common_box_two img_hover">
 
@@ -139,11 +180,11 @@
 
     <div class="theme_two_box_content">
 
-        <h4>
+        {{-- <h4>
             <a href="{{ route('rooms.show', $room->id) }}">
-                {{ $room->room_name }}
+                {{ $room->room_number }}
             </a>
-        </h4>
+        </h4> --}}
 
         <p>
             <strong>Owner:</strong>
@@ -171,124 +212,8 @@
 
 </div>
 
-@endforeach --}}
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel1.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>New beach, Thailand</p>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Kantua hotel, Thailand</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel2.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Indonesia</p>
-                                <div class="discount_tab">
-                                    <span>50%</span>
-                                </div>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Hotel paradise international</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel3.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Kualalampur</p>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Hotel kualalampur</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel4.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Mariana island</p>
-                                <div class="discount_tab">
-                                    <span>50%</span>
-                                </div>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Hotel deluxe</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel6.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Beach view</p>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Thailand grand suit</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel7.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Long island</p>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Zefi resort and spa</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel4.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Mariana island</p>
-                                <div class="discount_tab">
-                                    <span>50%</span>
-                                </div>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Hotel deluxe</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel6.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Beach view</p>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Thailand grand suit</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
-                        <div class="theme_common_box_two img_hover">
-                            <div class="theme_two_box_img">
-                                <a href="hotel-details.html"><img src="assets/img/tab-img/hotel7.png" alt="img"></a>
-                                <p><i class="fas fa-map-marker-alt"></i>Long island</p>
-                            </div>
-                            <div class="theme_two_box_content">
-                                <h4><a href="hotel-details.html">Zefi resort and spa</a></h4>
-                                <p><span class="review_rating">4.8/5 Excellent</span> <span class="review_count">(1214
-                                        reviewes)</span></p>
-                                <h3>$99.00 <span>Price starts from</span></h3>
-                            </div>
-                        </div>
+@endforeach
+                       
                     </div>
                 </div>
             </div>
@@ -305,11 +230,11 @@
                     <div class="footer_first_area">
                         <div class="footer_inquery_area">
                             <h5>Call 24/7 for any help</h5>
-                            <h3> <a href="tel:+00-123-456-789">+00 123 456 789</a></h3>
+                            <h3> <a href="">tel:+255 0772 459034</a></h3>
                         </div>
                         <div class="footer_inquery_area">
                             <h5>Mail to our support team</h5>
-                            <h3> <a href="mailto:support@domain.com">support@domain.com</a></h3>
+                            <h3> <a href="mailto:support@domain.com">Raya@gmail.com</a></h3>
                         </div>
                         <div class="footer_inquery_area">
                             <h5>Follow us on</h5>
@@ -328,12 +253,12 @@
                     </div>
                     <div class="footer_link_area">
                         <ul>
-                            <li><a href="about.html">About Us</a></li>
-                            <li><a href="testimonials.html">Testimonials</a></li>
-                            <li><a href="faqs.html">Rewards</a></li>
-                            <li><a href="terms-service.html">Work with Us</a></li>
-                            <li><a href="tour-guides.html">Meet the Team </a></li>
-                            <li><a href="news.html">Blog</a></li>
+                            <li><a href="">About Us</a></li>
+                            <li><a href="">Testimonials</a></li>
+                            <li><a href="">Rewards</a></li>
+                            <li><a href="">Work with Us</a></li>
+                            <li><a href="">Meet the Team </a></li>
+                            <li><a href="">Blog</a></li>
                         </ul>
                     </div>
                 </div>
@@ -358,27 +283,27 @@
                     </div>
                     <div class="footer_link_area">
                         <ul>
-                            <li><a href="top-destinations-details.html">Community program</a></li>
-                            <li><a href="top-destinations-details.html">Investor Relations</a></li>
-                            <li><a href="flight-search-result.html">Rewards Program</a></li>
-                            <li><a href="room-booking.html">PointsPLUS</a></li>
-                            <li><a href="testimonials.html">Partners</a></li>
-                            <li><a href="hotel-search.html">List My Hotel</a></li>
+                            <li><a href="#">Kutafuta Vyumba vya Kupanga</a></li>
+<li><a href="#">Kuweka Tangazo la Chumba</a></li>
+<li><a href="#">Jinsi ya Kupata Mpangaji</a></li>
+<li><a href="#">Masharti ya Upangaji</a></li>
+<li><a href="#">Wamiliki wa Nyumba (Landlords)</a></li>
+<li><a href="#">Ongeza Chumba Chako</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-4 col-sm-6 col-12">
                     <div class="footer_heading_area">
-                        <h5>Top cities</h5>
+                        <h5>Top Street</h5>
                     </div>
                     <div class="footer_link_area">
                         <ul>
-                            <li><a href="room-details.html">Chicago</a></li>
-                            <li><a href="hotel-details.html">New York</a></li>
-                            <li><a href="hotel-booking.html">San Francisco</a></li>
-                            <li><a href="tour-search.html">California</a></li>
-                            <li><a href="tour-booking.html">Ohio </a></li>
-                            <li><a href="tour-guides.html">Alaska</a></li>
+                            <li><a href="room-details.html">Fuoni</a></li>
+                            <li><a href="hotel-details.html">Bububu</a></li>
+                            <li><a href="hotel-booking.html">Mjini</a></li>
+                            <li><a href="tour-search.html">Chukwani</a></li>
+                            <li><a href="tour-booking.html">Ki/samaki </a></li>
+                            <li><a href="tour-guides.html">Mlandege</a></li>
                         </ul>
                     </div>
                 </div>
@@ -406,7 +331,7 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 <script>
-const text = "Welcome to the House Rent Management System";
+const text = "Welcome to the Building rent Collection Management System";
 let index = 0;
 
 function typeEffect() {

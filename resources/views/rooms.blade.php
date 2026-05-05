@@ -8,9 +8,12 @@
         <h3>Rooms Management</h3>
 
         <!-- ADD BUTTON -->
+        @if(Auth::user()->role=="landload")
+
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
             + Add Room
         </button>
+        @endif
 
         <div class="user-list">
             <table class="table table-striped">
@@ -78,7 +81,14 @@
 
                 <div class="modal-body">
 
-                    <input type="number" name="building_id" class="form-control mb-2" placeholder="Building ID">
+                    <select name="building_id" class="form-select mb-2">
+                        <option value="">--Select building</option>
+
+                        @foreach ($buildings as $b)
+                        <option value="{{ $b->id }}">{{ $b->room_name }}</option>
+                            
+                        @endforeach
+                    </select>
 
                     <input type="text" name="room_number" class="form-control mb-2" placeholder="Room Number">
 
