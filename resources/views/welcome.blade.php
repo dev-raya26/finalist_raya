@@ -331,7 +331,7 @@
         <i class="fas fa-chevron-up"></i>
     </div>
 <script>
-const text = "Welcome to the Building rent Collection Management System";
+const text = "Welcome to the Building rent Collection System";
 let index = 0;
 
 function typeEffect() {
