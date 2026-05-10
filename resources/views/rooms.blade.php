@@ -95,11 +95,9 @@
                     <input type="number" name="price" class="form-control mb-2" placeholder="Price">
 
                     <input type="text" name="type" class="form-control mb-2" placeholder="Type (Single, Double...)">
+                    <input type="hidden" name="status" value="available">
 
-                    <select name="status" class="form-control mb-2">
-                        <option value="available">Available</option>
-                        <option value="occupied">Occupied</option>
-                    </select>
+                    
 
                     <textarea name="description" class="form-control mb-2" placeholder="Description"></textarea>
 

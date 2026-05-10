@@ -18,7 +18,6 @@ class UserController extends Controller
     }
       public function store(Request $request)
     {
-        // validation
         $request->validate([
             'firstname' => 'required|string|max:255',
             'middlename' => 'nullable|string|max:255',
@@ -28,8 +27,6 @@ class UserController extends Controller
             'password' => 'required|min:4',
             'role' => 'required',
         ]);
-
-        // save user
         SystemUser::create([
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
@@ -40,7 +37,7 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return back()->with('success', 'User registered successfully');
+        return back()->with('success', 'Registration completed successfully!');
     }
     public function update(Request $request, $id)
 {

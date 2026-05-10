@@ -6,6 +6,8 @@ use App\Models\Booking;
 use App\Models\Building;
 use App\Models\Room;
 use App\Models\SystemUser;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,16 +20,43 @@ class LoginController extends Controller
         return view("signup");
     }
     public function home(){
+    $buildings = Building::with([
+        'rooms',
+        'landlord'
+    ])->get();
+    
     $rooms = Room::with('building.landlord')->where('status','!=','booked')->get();
-    return view("welcome", compact('rooms'));
+    return view("welcome", compact('rooms','buildings'));
 }
     public function dashboard(){
         $totalLandlords = SystemUser::where('role', 'landload')->count();
         $totalCustomers = SystemUser::where('role', 'customer')->count();
         $totalHouses = Building::count();
-        $totalBookings = Booking::count();
+        $totalBookings = Booking::where('status','pending')->count();
         $last_users = SystemUser::where("role","landload")->take(3)->orderByDesc("created_at")->get();
-        return view("dashboard",compact('totalLandlords','totalHouses','totalCustomers','totalBookings','last_users'));
+        $bookings = DB::table('bookings')
+        ->select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('COUNT(*) as total')
+        )
+        ->where('status','approved')
+        ->where('created_at', '>=', Carbon::now()->subDays(6))
+        ->groupBy('date')
+        ->orderBy('date', 'ASC')
+        ->get();
+    $dates = [];
+    $totals = [];
+
+    for ($i = 6; $i >= 0; $i--) {
+        $date = Carbon::now()->subDays($i)->format('Y-m-d');
+
+        $dates[] = $date;
+
+        $found = $bookings->firstWhere('date', $date);
+
+        $totals[] = $found ? $found->total : 0;
+    }
+        return view("dashboard",compact('totalLandlords','totalHouses','totalCustomers','totalBookings','last_users','dates','totals'));
     }
      public function login(Request $request)
     {

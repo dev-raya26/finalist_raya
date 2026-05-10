@@ -9,6 +9,7 @@
     <!-- Title -->
     <title>Home - Andtourtravel </title>
     <!-- Bootstrap css -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
 <link rel="stylesheet" href="{{ asset('mystyle.css') }}">
@@ -28,6 +29,34 @@
     background: url('{{ asset("images/img11.jpeg") }}') no-repeat center center/cover;
     position: relative;
 }
+
+.map-modal{
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:9999;
+}
+
+.map-content{
+    width:80%;
+    margin:5% auto;
+    background:#fff;
+    padding:10px;
+    border-radius:10px;
+    position:relative;
+}
+
+.map-content .close{
+    position:absolute;
+    right:10px;
+    top:5px;
+    font-size:25px;
+    cursor:pointer;
+}
+
 
 .hero-section::before {
     content: "";
@@ -149,76 +178,205 @@
 
 
     <!--Promotional Tours Area -->
-    <section id="promotional_tours" class="section_padding_top">
-        <div class="container">
-            <!-- Section Heading -->
-            <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="section_heading_center">
-                        <h2>Jisajili sasa tukuhudumie</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="promotional_tour_slider owl-theme owl-carousel dot_style">
-                        @foreach($rooms as $room)
+  <section id="promotional_tours" class="section_padding_top">
+    <div class="container">
 
-<div class="theme_common_box_two img_hover">
-
-    
-    <div class="theme_two_box_img">
-        <a href="{{ route('rooms.show', $room->id) }}">
-            <img src="{{ asset('images/' . $room->image) }}" alt="room image">
-        </a>
-
-        <p>
-            <i class="fas fa-map-marker-alt"></i>
-            {{ $room->building->location }}
-        </p>
-    </div>
-
-    <div class="theme_two_box_content">
-
-        {{-- <h4>
-            <a href="{{ route('rooms.show', $room->id) }}">
-                {{ $room->room_number }}
-            </a>
-        </h4> --}}
-
-        <p>
-            <strong>Owner:</strong>
-            {{ $room->building->landlord->firstname }}
-            {{ $room->building->landlord->lastname }}
-        </p>
-
-  
-        <p>
-            @if($room->status == 'available')
-                <span class="badge bg-success">Available</span>
-            @elseif($room->status == 'occupied')
-                <span class="badge bg-danger">Occupied</span>
-            @else
-                <span class="badge bg-warning">Pending</span>
-            @endif
-        </p>
-
-        <h3>
-            Tzs {{ $room->price }}
-            <span>Price per month</span>
-        </h3>
-
-    </div>
-
-</div>
-
-@endforeach
-                       
-                    </div>
+        <!-- Heading -->
+        <div class="row">
+            <div class="col-12">
+                <div class="section_heading_center">
+                    <h2>Karibu Upate Makazi Bora Kwa Bei Nafuu</h2>
                 </div>
             </div>
         </div>
-    </section>
+
+        <!-- BUILDING SLIDER -->
+       <div class="row">
+    <div class="col-lg-12">
+
+        <div class="promotional_tour_slider owl-theme owl-carousel dot_style">
+
+            @foreach($buildings as $building)
+
+            <div class="theme_common_box_two img_hover">
+
+                <div class="theme_two_box_img"
+                     onclick="showRooms({{ $building->id }})"
+                     style="cursor:pointer">
+
+                    <img src="{{ asset('images/' . $building->image) }}"
+                         style="height:250px;width:100%;object-fit:cover;">
+
+                    <p>
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ $building->location }}
+                    </p>
+
+                </div>
+
+                <div class="theme_two_box_content text-center">
+
+                    <h4>{{ $building->name }}</h4>
+
+                    <p>
+                        <strong>Owner:</strong>
+                        {{ $building->landlord->firstname }}
+                        {{ $building->landlord->lastname }}
+                    </p>
+
+                    <button class="btn btn-sm btn-primary mt-2"
+                            onclick="openMap('{{ $building->location }}')">
+                        View Location
+                    </button>
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+    </div>
+</div>
+
+        <!-- ROOMS -->
+        <div class="row mt-5" id="rooms-container">
+
+            @foreach($rooms as $room)
+
+            <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4 room-item building-{{ $room->building_id }} d-none">
+
+                <div class="theme_common_box_two img_hover">
+
+                    <div class="theme_two_box_img">
+
+                        <a href="{{ route('rooms.show', $room->id) }}">
+                            <img src="{{ asset('images/' . $room->image) }}"
+                                 alt="room image"
+                                 style="height:250px;width:100%;object-fit:cover;">
+                        </a>
+
+                        <p>
+                            <i class="fas fa-map-marker-alt"></i>
+                            {{ $room->building->location }}
+                        </p>
+
+                    </div>
+
+                    <div class="theme_two_box_content">
+
+                        <p>
+                            <strong>Room Name:</strong>
+                            {{ $room->room_number}}
+                        </p>
+
+                        <p>
+                            @if($room->status == 'available')
+                                <span class="badge bg-success">
+                                    Available
+                                </span>
+                            @elseif($room->status == 'occupied')
+                                <span class="badge bg-danger">
+                                    Occupied
+                                </span>
+                            @else
+                                <span class="badge bg-warning">
+                                    Pending
+                                </span>
+                            @endif
+                        </p>
+
+                        <h3>
+                            Tzs {{ $room->price }}
+                            <span>Price per month</span>
+                        </h3>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            @endforeach
+
+        </div>
+
+    </div>
+
+    </div> <!-- mwisho wa page content -->
+
+<!-- MAP MODAL (WEKA HAPA CHINI SIO NDANI YA CAROUSEL) -->
+<style>
+.map-modal{
+    display:none;
+    position:fixed !important;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    z-index:999999 !important; /* 🔥 important sana */
+}
+
+.map-content{
+    width:80%;
+    margin:5% auto;
+    background:#fff;
+    padding:10px;
+    border-radius:10px;
+    position:relative;
+    z-index:1000000;
+}
+
+.close{
+    position:absolute;
+    right:10px;
+    top:5px;
+    font-size:30px;
+    cursor:pointer;
+}
+</style>
+<div id="mapModal" class="map-modal">
+    <div class="map-content">
+
+        <span class="close" onclick="closeMap()">&times;</span>
+
+        <iframe id="mapFrame"
+                width="100%"
+                height="450"
+                style="border:0;"
+                allowfullscreen>
+        </iframe>
+
+    </div>
+</div>
+</section>
+
+<script>
+
+function showRooms(buildingId)
+{
+    document.querySelectorAll('.room-item').forEach(room => {
+        room.classList.add('d-none');
+    });
+    let selectedRooms = document.querySelectorAll('.building-' + buildingId);
+
+    selectedRooms.forEach(room => {
+        room.classList.remove('d-none');
+    });
+    if(selectedRooms.length > 0){
+
+        selectedRooms[0].scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+
+    }
+
+}
+
+</script>
     <!-- Footer  -->
     <footer id="footer_area">
         <div class="container">
@@ -330,6 +488,32 @@
         <i class="fas fa-chevron-up"></i>
         <i class="fas fa-chevron-up"></i>
     </div>
+    <script>
+
+function openMap(location)
+{
+    let modal = document.getElementById("mapModal");
+    let frame = document.getElementById("mapFrame");
+
+    let url = "https://www.google.com/maps?q=" + encodeURIComponent(location) + "&output=embed";
+
+    frame.src = url;
+
+    // FORCE DISPLAY
+    modal.style.display = "block";
+    modal.style.visibility = "visible";
+    modal.style.opacity = "1";
+}
+
+function closeMap()
+{
+    let modal = document.getElementById("mapModal");
+
+    modal.style.display = "none";
+    document.getElementById("mapFrame").src = "";
+}
+
+</script>
 <script>
 const text = "Welcome to the Building rent Collection System";
 let index = 0;
@@ -344,6 +528,7 @@ function typeEffect() {
 
 window.onload = typeEffect;
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.meanmenu.js') }}"></script>

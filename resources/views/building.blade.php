@@ -74,7 +74,7 @@
 
                 <div class="modal-body">
 
-                    <input type="text" name="room_name" class="form-control mb-2" placeholder="Room Name" required>
+                    <input type="text" name="room_name" class="form-control mb-2" placeholder="Building Name eg apartment.." required>
 
                     <input type="text" name="location" class="form-control mb-2" placeholder="Location" required>
 

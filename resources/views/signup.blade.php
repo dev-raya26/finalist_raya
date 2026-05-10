@@ -68,67 +68,92 @@
         <div class="register-box">
 
             <h3 class="text-center mb-4">Create Account</h3>
-
+           @if(session('success'))
+            <p style="text-align: center;color: green">{{ session('success') }}</p>
+            @endif
             <form action="{{ route('reguser.store') }}" method="POST">
-            @csrf
-                <!-- ROW 1 -->
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label>First Name</label>
-                        <input type="text" name="firstname" class="form-control">
-                    </div>
+    @csrf
 
-                    <div class="col-md-4">
-                        <label>Middle Name</label>
-                        <input type="text" name="middlename" class="form-control">
-                    </div>
+    <!-- ROW 1 -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label>First Name</label>
+            <input type="text" name="firstname" class="form-control">
+        </div>
 
-                    <div class="col-md-4">
-                        <label>Last Name</label>
-                        <input type="text" name="lastname" class="form-control">
-                    </div>
-                </div>
+        <div class="col-md-4">
+            <label>Middle Name</label>
+            <input type="text" name="middlename" class="form-control">
+        </div>
 
-                <!-- ROW 2 -->
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label>Email</label>
-                        <input type="email" name="email" class="form-control">
-                    </div>
+        <div class="col-md-4">
+            <label>Last Name</label>
+            <input type="text" name="lastname" class="form-control">
+        </div>
+    </div>
 
-                    <div class="col-md-4">
-                        <label>Phone</label>
-                        <input type="text" name="phone" class="form-control">
-                    </div>
-                    <div class="col-md-4">
-                        <label>Password</label>
-                        <input type="password" name="password" class="form-control">
-                    </div>
+    <!-- ROW 2 -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <label>Email</label>
+            <input type="email" name="email" class="form-control">
+        </div>
 
-                   
-                </div>
+        <div class="col-md-4">
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control">
+        </div>
 
-                <!-- ROW 3 -->
-                <div class="row mb-3">
-                    
+        <div class="col-md-4">
+            <label>Password</label>
+            <input type="password" name="password" id="password" class="form-control">
+        </div>
+    </div>
 
-                    <div class="col-md-12">
-                        <label>Confirm Password</label>
-                        <input type="password" class="form-control">
-                    </div>
+    <!-- ROW 3 -->
+    <div class="row mb-3">
 
-                    <div class="col-md-4">
-                        <input type="hidden" name="role" value="customer">
-                    </div>
-                </div>
+        <div class="col-md-12">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" class="form-control">
 
-                <button class="btn btn-success w-100 mt-3" type="submit">Register</button>
+            <!-- Ujumbe wa error -->
+            <small id="message"></small>
+        </div>
 
-                <p class="text-center mt-3">
-                    Already have account? <a href="{{ route('showlogin') }}">Login</a>
-                </p>
+        <div class="col-md-4">
+            <input type="hidden" name="role" value="customer">
+        </div>
+    </div>
 
-            </form>
+    <button class="btn btn-success w-100 mt-3" type="submit">
+        Register
+    </button>
+
+    <p class="text-center mt-3">
+        Already have account?
+        <a href="{{ route('showlogin') }}">Login</a>
+    </p>
+
+</form>
+
+<script>
+    const password = document.getElementById('password');
+    const confirmPassword = document.getElementById('confirmPassword');
+    const message = document.getElementById('message');
+
+    confirmPassword.addEventListener('keyup', function () {
+
+        if (password.value != confirmPassword.value) {
+            message.innerHTML = "Password does not match";
+            message.style.color = "red";
+        } else {
+            message.innerHTML = "Password matched sucess";
+            message.style.color = "green";
+        }
+
+    });
+</script>
 
         </div>
 
