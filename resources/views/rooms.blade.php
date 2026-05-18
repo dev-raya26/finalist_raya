@@ -41,6 +41,11 @@
                                 <img src="{{ asset('images/'.$room->image) }}" width="60" style="border-radius:10px;">
                             </td>
                             <td>
+                                {{-- <a href="{{ route('rooms.show', $room->id) }}"
+                                class="btn btn-info btn-sm">
+
+                                    <i class="fas fa-eye"></i>
+                                </a> --}}
                                 <button class="btn btn-warning btn-sm editBtn"
                                     data-id="{{ $room->id }}"
                                     data-room_number="{{ $room->room_number }}"
@@ -91,6 +96,7 @@
                     </select>
 
                     <input type="text" name="room_number" class="form-control mb-2" placeholder="Room Number">
+                    <input type="text" name="room_size" class="form-control mb-2" placeholder="Room size">
 
                     <input type="number" name="price" class="form-control mb-2" placeholder="Price">
 

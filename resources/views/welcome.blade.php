@@ -243,64 +243,99 @@
         <!-- ROOMS -->
         <div class="row mt-5" id="rooms-container">
 
-            @foreach($rooms as $room)
+    @foreach($rooms as $room)
 
-            <div class="col-lg-4 col-md-6 col-sm-12 col-12 mb-4 room-item building-{{ $room->building_id }} d-none">
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4 room-item building-{{ $room->building_id }} d-none">
 
-                <div class="theme_common_box_two img_hover">
+        <div class="card shadow-sm border-0 h-100 rounded-4 overflow-hidden">
 
-                    <div class="theme_two_box_img">
+            <!-- Room Image -->
+            <div class="position-relative">
 
-                        <a href="{{ route('rooms.show', $room->id) }}">
-                            <img src="{{ asset('images/' . $room->image) }}"
-                                 alt="room image"
-                                 style="height:250px;width:100%;object-fit:cover;">
-                        </a>
+                <a href="{{ route('signup') }}">
+                    <img src="{{ asset('images/' . $room->image) }}"
+                         alt="room image"
+                         style="height:250px;width:100%;object-fit:cover;">
+                </a>
 
-                        <p>
-                            <i class="fas fa-map-marker-alt"></i>
-                            {{ $room->building->location }}
-                        </p>
+                <!-- Status Badge -->
+                <div class="position-absolute top-0 end-0 m-3">
 
-                    </div>
+                    @if($room->status == 'available')
+                        <span class="badge bg-success px-3 py-2">
+                            Available
+                        </span>
 
-                    <div class="theme_two_box_content">
+                    @elseif($room->status == 'occupied')
+                        <span class="badge bg-danger px-3 py-2">
+                            Occupied
+                        </span>
 
-                        <p>
-                            <strong>Room Name:</strong>
-                            {{ $room->room_number}}
-                        </p>
-
-                        <p>
-                            @if($room->status == 'available')
-                                <span class="badge bg-success">
-                                    Available
-                                </span>
-                            @elseif($room->status == 'occupied')
-                                <span class="badge bg-danger">
-                                    Occupied
-                                </span>
-                            @else
-                                <span class="badge bg-warning">
-                                    Pending
-                                </span>
-                            @endif
-                        </p>
-
-                        <h3>
-                            Tzs {{ $room->price }}
-                            <span>Price per month</span>
-                        </h3>
-
-                    </div>
+                    @else
+                        <span class="badge bg-warning text-dark px-3 py-2">
+                            Pending
+                        </span>
+                    @endif
 
                 </div>
 
             </div>
 
-            @endforeach
+            <!-- Card Body -->
+            <div class="card-body d-flex flex-column">
+
+                <!-- Room Name -->
+                <h5 class="fw-bold mb-3">
+                    {{ $room->room_number }}
+                </h5>
+
+                <!-- Location -->
+                <p class="text-muted mb-2">
+                    <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                    {{ $room->building->location }}
+                </p>
+
+                <!-- Room Size -->
+                <p class="mb-2">
+                    <strong>Room Size:</strong>
+                    {{ $room->room_area }} m²
+                </p>
+
+                <!-- Utilities -->
+                <p class="mb-4">
+                    <strong>Utilities:</strong>
+                    {{ $room->description }}
+                </p>
+
+                <!-- Price -->
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+
+                    <div>
+                        <h4 class="text-primary fw-bold mb-0">
+                            Tzs {{ number_format($room->price) }}
+                        </h4>
+
+                        <small class="text-muted">
+                            Per Month
+                        </small>
+                    </div>
+
+                    <a href="{{ route('signup') }}"
+                       class="btn btn-primary rounded-pill px-4">
+                        Book Now
+                    </a>
+
+                </div>
+
+            </div>
 
         </div>
+
+    </div>
+
+    @endforeach
+
+</div>
 
     </div>
 
@@ -316,7 +351,7 @@
     width:100%;
     height:100%;
     background:rgba(0,0,0,0.7);
-    z-index:999999 !important; /* 🔥 important sana */
+    z-index:999999 !important; 
 }
 
 .map-content{
@@ -442,11 +477,11 @@ function showRooms(buildingId)
                     <div class="footer_link_area">
                         <ul>
                             <li><a href="#">Kutafuta Vyumba vya Kupanga</a></li>
-<li><a href="#">Kuweka Tangazo la Chumba</a></li>
-<li><a href="#">Jinsi ya Kupata Mpangaji</a></li>
-<li><a href="#">Masharti ya Upangaji</a></li>
-<li><a href="#">Wamiliki wa Nyumba (Landlords)</a></li>
-<li><a href="#">Ongeza Chumba Chako</a></li>
+                            <li><a href="#">Kuweka Tangazo la Chumba</a></li>
+                            <li><a href="#">Jinsi ya Kupata Mpangaji</a></li>
+                            <li><a href="#">Masharti ya Upangaji</a></li>
+                            <li><a href="#">Wamiliki wa Nyumba (Landlords)</a></li>
+                            <li><a href="#">Ongeza Chumba Chako</a></li>
                         </ul>
                     </div>
                 </div>
@@ -498,8 +533,6 @@ function openMap(location)
     let url = "https://www.google.com/maps?q=" + encodeURIComponent(location) + "&output=embed";
 
     frame.src = url;
-
-    // FORCE DISPLAY
     modal.style.display = "block";
     modal.style.visibility = "visible";
     modal.style.opacity = "1";

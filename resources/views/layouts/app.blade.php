@@ -236,8 +236,15 @@ li a{
 
 <!-- SIDEBAR -->
 <div class="sidebar bg-dark text-white vh-100 p-3">
+        @if(Auth::user()->role=="admin")
+    <h4 class="text-center mb-3 fw-bold" style="font-size: 20px">ADMIN PANEL</h4>
+        @elseif(Auth::user()->role=="landload")
+    <h4 class="text-center mb-3 fw-bold" style="font-size: 20px">LANDLORD PANEL</h4>
+    @elseif(Auth::user()->role=="customer")
+    <h4 class="text-center mb-3 fw-bold" style="font-size: 20px">CUSTOMER PANEL</h4>
 
-    <h4 class="text-center mb-3 fw-bold">ADMIN PANEL</h4>
+
+      @endif
     <hr class="bg-secondary">
 
     <ul class="nav flex-column">

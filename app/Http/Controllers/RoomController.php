@@ -14,6 +14,12 @@ class RoomController extends Controller
         $buildings = Building::where('landlord_id',Auth::user()->id)->get();
         return view("rooms",compact('rooms','buildings'));
     }
+        public function show($id)
+    {
+        $room = Room::findOrFail($id);
+
+        return view('room_view', compact('room'));
+    }
     public function store(Request $request)
 {
     $filename = null;
@@ -28,6 +34,7 @@ class RoomController extends Controller
         'building_id' => $request->building_id,
         'room_number' => $request->room_number,
         'price' => $request->price,
+        'room_area' => $request->room_size,
         'type' => $request->type,
         'status' => $request->status,
         'description' => $request->description,

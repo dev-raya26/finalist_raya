@@ -17,3 +17,5 @@ Route::resource("/reguser",UserController::class);
 Route::resource('buildings', BuildingController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('bookings', BookingController::class);
+Route::get('/rooms/{id}', [RoomController::class, 'show'])
+    ->name('rooms.show');
