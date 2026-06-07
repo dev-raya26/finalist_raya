@@ -38,15 +38,14 @@
 <div class="auth-wrapper">
 
     <div class="login-box">
-        <h3 class="text-center mb-4">Login</h3>
+        <h3 class="text-center mb-4">Resest password form</h3>
         <br>
         @if(session("success"))
         <span style="color: green;text-align: center">{{ session("success") }}</span>
         @endif
-        
         <span></span>
 
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('password.email') }}" method="POST">
             @csrf
 
             <div class="mb-3">
@@ -54,22 +53,12 @@
                 <input type="email" name="email" class="form-control" placeholder="Enter email">
             </div>
 
-            <div class="mb-3">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter password">
-            </div>
-
-            <a href="{{ route('forgot') }}" style="text-align: right">Forgot password?</a>
-
-            <button class="btn btn-primary w-100" type="submit">Login</button>
+            <button class="btn btn-primary w-100" type="submit">Send link</button>
 
             <p class="text-center mt-3">
-                No account? <a href="{{ route('home') }}">home</a>
+                <a href="{{ route('showlogin') }}">Back to login</a>
             </p>
         </form>
-        @if(session("error"))
-        <span style="color: red;text-align: center">{{ session("error") }}</span>
-        @endif
     </div>
 
 </div>

@@ -14,7 +14,7 @@
         @endif
 
         <div class="user-list">
-           <table class="table table-striped">
+           <table class="table table-striped table-sm">
     <thead>
         <tr>
             <th>Firstname</th>
@@ -41,7 +41,7 @@
                     </span>
                 </td>
                 <td>
-    <button class="btn btn-sm btn-warning editBtn"
+    <button class="btn btn-sm btn-primary editBtn"
         data-id="{{ $user->id }}"
         data-firstname="{{ $user->firstname }}"
         data-middlename="{{ $user->middlename }}"
@@ -52,7 +52,7 @@
         data-status="{{ $user->status }}"
         data-bs-toggle="modal"
         data-bs-target="#editModal">
-        Edit
+      <i class="fas fa-pencil"></i>
     </button>
 </td>
 <div class="modal fade" id="editModal">
@@ -212,4 +212,15 @@ document.querySelectorAll('.editBtn').forEach(button => {
 });
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('success') }}',
+    confirmButtonText: 'OK'
+});
+</script>
+@endif
 @endsection

@@ -76,38 +76,96 @@
 
     <!-- ROW 1 -->
     <div class="row mb-3">
+
         <div class="col-md-4">
             <label>First Name</label>
-            <input type="text" name="firstname" class="form-control">
+            <input type="text"
+                   name="firstname"
+                   value="{{ old('firstname') }}"
+                   class="form-control @error('firstname') is-invalid @enderror">
+
+            @error('firstname')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <div class="col-md-4">
             <label>Middle Name</label>
-            <input type="text" name="middlename" class="form-control">
+            <input type="text"
+                   name="middlename"
+                   value="{{ old('middlename') }}"
+                   class="form-control @error('middlename') is-invalid @enderror">
+
+            @error('middlename')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <div class="col-md-4">
             <label>Last Name</label>
-            <input type="text" name="lastname" class="form-control">
+            <input type="text"
+                   name="lastname"
+                   value="{{ old('lastname') }}"
+                   class="form-control @error('lastname') is-invalid @enderror">
+
+            @error('lastname')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
+
     </div>
 
     <!-- ROW 2 -->
     <div class="row mb-3">
+
         <div class="col-md-4">
             <label>Email</label>
-            <input type="email" name="email" class="form-control">
+            <input type="email"
+                   name="email"
+                   value="{{ old('email') }}"
+                   class="form-control @error('email') is-invalid @enderror">
+
+            @error('email')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <div class="col-md-4">
             <label>Phone</label>
-            <input type="text" name="phone" class="form-control">
+            <input type="text"
+                   name="phone"
+                   value="{{ old('phone') }}"
+                   class="form-control @error('phone') is-invalid @enderror">
+
+            @error('phone')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
 
         <div class="col-md-4">
             <label>Password</label>
-            <input type="password" name="password" id="password" class="form-control">
+            <input type="password"
+                   name="password"
+                   id="password"
+                   class="form-control @error('password') is-invalid @enderror">
+
+            @error('password')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
+
     </div>
 
     <!-- ROW 3 -->
@@ -115,16 +173,17 @@
 
         <div class="col-md-12">
             <label>Confirm Password</label>
-            <input type="password" id="confirmPassword" class="form-control">
+            <input type="password"
+                   name="password_confirmation"
+                   id="confirmPassword"
+                   class="form-control">
 
-            <!-- Ujumbe wa error -->
             <small id="message"></small>
         </div>
 
-        <div class="col-md-4">
-            <input type="hidden" name="role" value="customer">
-        </div>
     </div>
+
+    <input type="hidden" name="role" value="customer">
 
     <button class="btn btn-success w-100 mt-3" type="submit">
         Register

@@ -19,3 +19,13 @@ Route::resource('rooms', RoomController::class);
 Route::resource('bookings', BookingController::class);
 Route::get('/rooms/{id}', [RoomController::class, 'show'])
     ->name('rooms.show');
+Route::get('/buildings/{id}', [BuildingController::class, 'show'])
+    ->name('buildings.show');
+Route::get('/buildings/{id}/rooms', [BuildingController::class, 'rooms'])
+    ->name('buildings.rooms');
+Route::get("/forgot",[LoginController::class,"forgot"])->name("forgot");
+
+Route::post('/forgot-password', [LoginController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [LoginController::class, 'updatePassword'])->name('password.update');
+

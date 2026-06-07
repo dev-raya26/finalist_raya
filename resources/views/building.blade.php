@@ -15,13 +15,11 @@
         @endif
 
         <div class="user-list">
-            <table class="table table-striped">
+            <table class="table table-striped table-sm">
                 <thead>
                     <tr>
                         <th>Building Name</th>
-                        <th>Location</th>
-                        <th>Description</th>
-                        <th>Image</th>
+                        <th>Building status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -30,22 +28,32 @@
                     @forelse($rooms as $room)
                         <tr>
                             <td>{{ $room->room_name }}</td>
-                            <td>{{ $room->location }}</td>
-                            <td>{{ $room->description }}</td>
                             <td>
-                                <img src="{{ asset('images/'.$room->image) }}" width="60" style="border-radius: 50%;object-fit: cover">
+                                @if($room->status=="Active")
+                                <span class="badge bg-success">{{ $room->status }}</span>
+                                @endif
                             </td>
+                           
                             <td>
-                                <button class="btn btn-warning btn-sm editBtn"
-                                    data-id="{{ $room->id }}"
-                                    data-room_name="{{ $room->room_name }}"
-                                    data-location="{{ $room->location }}"
-                                    data-description="{{ $room->description }}"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    Edit
-                                </button>
-                            </td>
+    <a href="{{ route('buildings.show', $room->id) }}"
+       class="btn btn-info btn-sm">
+        <i class="fas fa-eye"></i>
+    </a>
+
+    <button class="btn btn-warning btn-sm editBtn"
+        data-id="{{ $room->id }}"
+        data-room_name="{{ $room->room_name }}"
+        data-location="{{ $room->location }}"
+        data-description="{{ $room->description }}"
+        data-bs-toggle="modal"
+        data-bs-target="#editModal">
+        <i class="fas fa-edit"></i>
+    </button>
+    <a href="{{ route('buildings.rooms', $room->id) }}"
+   class="btn btn-primary btn-sm">
+   View All Rooms
+</a>
+</td>
                         </tr>
                     @empty
                         <tr>
@@ -148,5 +156,15 @@ document.querySelectorAll('.editBtn').forEach(button => {
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+@if(session('success'))
+<script>
+Swal.fire({
+    icon: 'success',
+    title: 'Success!',
+    text: '{{ session('success') }}',
+    confirmButtonText: 'OK'
+});
+</script>
+@endif
 @endsection

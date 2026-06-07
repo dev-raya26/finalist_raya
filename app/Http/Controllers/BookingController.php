@@ -7,6 +7,7 @@ use App\Models\Building;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -44,6 +45,41 @@ public function update(Request $request, $id)
         'status' => $request->status,
     ]);
 
-    return back();
+
+    if ($request->status == 'approved') {
+
+        $email = $booking->customer->email; 
+
+        Mail::send([], [], function ($message) use ($booking, $email) {
+
+            $message->to($email)
+                ->subject('House Booking Confirmation')
+                ->html("
+                    <h2>House Booking Confirmation</h2>
+
+                    <p>Dear {$booking->customer->firstname} {$booking->customer->middlename} {$booking->customer->lastname},</p>
+
+                    <p>Your house booking has been confirmed.</p>
+
+                    <p>
+                        <strong>Starting Date:</strong>
+                        {$booking->start_date}
+                    </p>
+
+                    <p>
+                        <strong>End Date:</strong>
+                        {$booking->end_date}
+                    </p>
+
+                    <p>
+                        Please make payment to start living in the house.
+                    </p>
+
+                    <p>Thank you.</p>
+                ");
+        });
+    }
+
+    return back()->with('success', 'Booking status updated successfully.');
 }
 }

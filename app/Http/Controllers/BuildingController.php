@@ -61,4 +61,19 @@ class BuildingController extends Controller
 
         return back();
     }
+    public function show($id)
+{
+    $building = Building::findOrFail($id);
+
+    return view('buildings_show', compact('building'));
+}
+
+  public function rooms($id)
+{
+    $building = Building::findOrFail($id);
+
+    $rooms = Room::where('building_id', $id)->get();
+
+    return view('viewrooms', compact('building', 'rooms'));
+}
 }

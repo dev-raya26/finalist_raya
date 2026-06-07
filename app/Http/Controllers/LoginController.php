@@ -10,6 +10,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password;
 
 class LoginController extends Controller
 {
@@ -94,4 +96,49 @@ class LoginController extends Controller
 
         return redirect('/showlogin');
     }
+    public function forgot(){
+        return view("forgotpassword");
+    }
+    public function sendResetLink(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email'
+    ]);
+
+    $status = Password::broker('users')->sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+        ? back()->with('success', 'Link sent successfully, check your email Inbox')
+        : back()->withErrors(['email' => 'Email not found.']);
+}
+
+    public function showResetForm(Request $request, $token = null)
+    {
+        return view('resetpassword1', [
+            'token' => $token,
+            'email' => $request->query('email') 
+        ]);
+    }
+    public function updatePassword(Request $request)
+{
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:4|confirmed'
+    ]);
+
+    $status = Password::broker('users')->reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function ($teacher, $password) {
+            $teacher->password = Hash::make($password);
+            $teacher->save();
+        }
+    );
+
+    return $status === Password::PASSWORD_RESET
+        ? redirect()->route('showlogin')->with('success', 'Password changed success!')
+        : back()->withErrors(['email' => __($status)]);
+}
 }

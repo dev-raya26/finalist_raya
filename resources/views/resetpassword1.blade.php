@@ -43,33 +43,26 @@
         @if(session("success"))
         <span style="color: green;text-align: center">{{ session("success") }}</span>
         @endif
-        
         <span></span>
 
-        <form action="{{ route('login') }}" method="POST">
+        <form action="{{ route('password.update') }}" method="POST">
+            
             @csrf
+            <input type="hidden" name="token" value="{{ $token }}">
+       <input type="hidden" name="email" value="{{ $email }}">
 
             <div class="mb-3">
-                <label>Email</label>
-                <input type="email" name="email" class="form-control" placeholder="Enter email">
-            </div>
-
-            <div class="mb-3">
-                <label>Password</label>
+                <label>Create Password</label>
                 <input type="password" name="password" class="form-control" placeholder="Enter password">
             </div>
+            <div class="mb-3">
+                <label>Confirm Password</label>
+                <input type="password" name="password_confirmation" class="form-control" placeholder="Enter password">
+            </div>
 
-            <a href="{{ route('forgot') }}" style="text-align: right">Forgot password?</a>
+            <button class="btn btn-primary w-100" type="submit">Change password</button>
 
-            <button class="btn btn-primary w-100" type="submit">Login</button>
-
-            <p class="text-center mt-3">
-                No account? <a href="{{ route('home') }}">home</a>
-            </p>
         </form>
-        @if(session("error"))
-        <span style="color: red;text-align: center">{{ session("error") }}</span>
-        @endif
     </div>
 
 </div>

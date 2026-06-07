@@ -19,14 +19,23 @@ class UserController extends Controller
       public function store(Request $request)
     {
         $request->validate([
-            'firstname' => 'required|string|max:255',
-            'middlename' => 'nullable|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'phone' => 'required|string|max:20',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:4',
-            'role' => 'required',
-        ]);
+    'firstname' => 'required',
+    'middlename' => 'required',
+    'lastname' => 'required',
+    'email' => 'required|email',
+    'phone' => 'required',
+    'password' => 'required|min:6|confirmed',
+],[
+    'firstname.required' => 'Please enter your first name.',
+    'middlename.required' => 'Please enter your middle name.',
+    'lastname.required' => 'Please enter your last name.',
+    'email.required' => 'Please enter your email address.',
+    'email.email' => 'Please provide a valid email address.',
+    'phone.required' => 'Please enter your phone number.',
+    'password.required' => 'Please enter a password.',
+    'password.min' => 'Your password must contain at least 6 characters.',
+    'password.confirmed' => 'The password confirmation does not match.',
+]);
         SystemUser::create([
             'firstname' => $request->firstname,
             'middlename' => $request->middlename,
@@ -37,7 +46,7 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return back()->with('success', 'Registration completed successfully!');
+        return redirect()->route("showlogin")->with('success', 'Registration completed successfully,please login!');
     }
     public function update(Request $request, $id)
 {

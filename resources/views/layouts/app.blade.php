@@ -270,12 +270,12 @@ li a{
             </a>
         </li>
 
-        <li class="nav-item mb-2">
+        {{-- <li class="nav-item mb-2">
             <a href="{{ route('rooms.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-door-open"></i>
                 Rooms
             </a>
-        </li>
+        </li> --}}
 
         <li class="nav-item mb-2">
             <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
@@ -315,12 +315,12 @@ li a{
                 Buildings
             </a>
         </li>
-        <li class="nav-item mb-2">
+        {{-- <li class="nav-item mb-2">
             <a href="{{ route('rooms.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-door-open"></i>
                 Rooms
             </a>
-        </li>
+        </li> --}}
         <li class="nav-item mb-2">
             <a href="{{ route('reguser.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-users"></i>
@@ -331,6 +331,12 @@ li a{
             <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-calendar-check"></i>
                 Bookings
+            </a>
+        </li>
+        <li class="nav-item mb-2">
+            <a href="#" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+                <i class="fa fa-cog"></i>
+                Settings
             </a>
         </li>
         @elseif (Auth::user()->role=="customer")
