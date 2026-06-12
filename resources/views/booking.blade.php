@@ -125,7 +125,7 @@
 
             @foreach($building->rooms as $room)
                 <option value="{{ $room->id }}" data-price="{{ $room->price }}">
-                    Room {{ $room->room_number }} - {{ $room->price }}/month
+                    {{ $room->room_number }} - {{ $room->price }}/month
                 </option>
             @endforeach
 

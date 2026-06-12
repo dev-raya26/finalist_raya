@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Building;
+use App\Models\Notification;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,18 @@ class BookingController extends Controller
 {
     public function index(){
         $bookings = Booking::with('customer')->latest()->get();
-        $buildings = Building::with('rooms.building')->get();
-        return view('booking',compact('bookings','buildings'));
+        $buildings = Building::with([
+    'rooms' => function ($query) {
+        $query->where('status', 'available');
+    }
+])
+->whereHas('rooms', function ($query) {
+    $query->where('status', 'available');
+})
+->get();
+        $noteCount = Notification::count();
+        $notes = Notification::all();
+        return view('booking',compact('bookings','buildings','notes','noteCount'));
     }
     public function store(Request $request)
 {
@@ -33,6 +44,10 @@ class BookingController extends Controller
             'status' => 'booked'
         ]);
     }
+    Notification::create([
+        "title" => "Booking alert",
+        "action" => "The Ternant ".Auth::user()->firstname." ".Auth::user()->middlename." has made booking",
+    ]);
 
     return back();
 }

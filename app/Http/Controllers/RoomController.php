@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
+use App\Models\Notification;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,9 @@ class RoomController extends Controller
     public function index(){
         $rooms = Room::latest()->get();
         $buildings = Building::where('landlord_id',Auth::user()->id)->get();
-        return view("rooms",compact('rooms','buildings'));
+        $noteCount = Notification::count();
+        $notes = Notification::all();
+        return view("rooms",compact('rooms','buildings','notes','noteCount'));
     }
         public function show($id)
     {

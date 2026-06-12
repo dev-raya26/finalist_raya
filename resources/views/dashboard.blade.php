@@ -112,15 +112,9 @@ new Chart(ctx, {
     }
 });
 </script>
-
+  @if(Auth::user()->role != "customer")
         <div class="chart-box">
-            <h3>Rooms Utilization</h3>
-            <canvas id="pieChart"></canvas>
-        </div>
-    </div>
-
-    <div class="activity">
-    <h3>Recent Users</h3>
+            <h3>Recent Users</h3>
 
     <div class="user-list">
         @foreach ($last_users as $l)
@@ -139,7 +133,11 @@ new Chart(ctx, {
         
 
     </div>
-</div>
+        </div>
+        @endif
+    </div>
+
+   
 @endif
 
 </div>

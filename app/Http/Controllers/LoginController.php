@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Building;
+use App\Models\Notification;
 use App\Models\Room;
 use App\Models\SystemUser;
 use Carbon\Carbon;
@@ -35,7 +36,15 @@ class LoginController extends Controller
         $totalCustomers = SystemUser::where('role', 'customer')->count();
         $totalHouses = Building::count();
         $totalBookings = Booking::where('status','pending')->count();
-        $last_users = SystemUser::where("role","landload")->take(3)->orderByDesc("created_at")->get();
+        if(Auth::user()->role=="landload"){
+        $last_users = SystemUser::latest()->where('role','customer')->get();
+        }elseif(Auth::user()->role=="admin"){
+        $last_users = SystemUser::latest()->where('role','!=','admin')->get();}
+        else{
+        $last_users = SystemUser::latest()->where('role','customer')->get();
+
+
+        }
         $bookings = DB::table('bookings')
         ->select(
             DB::raw('DATE(created_at) as date'),
@@ -58,7 +67,9 @@ class LoginController extends Controller
 
         $totals[] = $found ? $found->total : 0;
     }
-        return view("dashboard",compact('totalLandlords','totalHouses','totalCustomers','totalBookings','last_users','dates','totals'));
+        $noteCount = Notification::count();
+        $notes = Notification::all();
+        return view("dashboard",compact('notes','noteCount','totalLandlords','totalHouses','totalCustomers','totalBookings','last_users','dates','totals'));
     }
      public function login(Request $request)
     {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Notification;
 use App\Models\SystemUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,11 +12,39 @@ class UserController extends Controller
 {
     public function index(){
         if(Auth::user()->role=="landload"){
-        $users = SystemUser::latest()->where('role','=','customer')->get();
+        $users = SystemUser::latest()->where('role','customer')->get();
         }elseif(Auth::user()->role=="admin"){
         $users = SystemUser::latest()->where('role','!=','admin')->get();}
-        return view("registration",compact('users'));
+        $noteCount = Notification::count();
+        $notes = Notification::all();
+        return view("registration",compact('users','noteCount','notes'));
     }
+    public function searchUsers(Request $request)
+{
+    $search = $request->search;
+
+    $query = SystemUser::query();
+
+    if(Auth::user()->role == "landload"){
+        $query->where('role', 'customer');
+    }
+
+    if(Auth::user()->role == "admin"){
+        $query->where('role', '!=', 'admin');
+    }
+
+    $query->where(function($q) use ($search){
+        $q->where('firstname', 'like', "%{$search}%")
+          ->orWhere('middlename', 'like', "%{$search}%")
+          ->orWhere('lastname', 'like', "%{$search}%")
+          ->orWhere('phone', 'like', "%{$search}%")
+          ->orWhere('email', 'like', "%{$search}%");
+    });
+
+    $users = $query->latest()->get();
+
+    return response()->json($users);
+}
       public function store(Request $request)
     {
         $request->validate([
@@ -67,5 +96,11 @@ class UserController extends Controller
     ]);
 
     return back()->with('success', 'User updated successfully');
+}
+    public function clearAll()
+{
+    Notification::truncate();
+
+    return back();
 }
 }

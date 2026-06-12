@@ -416,7 +416,7 @@ function showRooms(buildingId)
     <footer id="footer_area">
         <div class="container">
             <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                <div class="col-md-4">
                     <div class="footer_heading_area">
                         <h5>Need any help?</h5>
                     </div>
@@ -440,7 +440,7 @@ function showRooms(buildingId)
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 offset-lg-1 col-md-6 col-sm-6 col-12">
+                {{-- <div class="col-lg-2 offset-lg-1 col-md-6 col-sm-6 col-12">
                     <div class="footer_heading_area">
                         <h5>Company</h5>
                     </div>
@@ -469,8 +469,8 @@ function showRooms(buildingId)
                             <li><a href="privacy-policy.html">Privacy Policy</a></li>
                         </ul>
                     </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                </div> --}}
+                <div class="col-md-4">
                     <div class="footer_heading_area">
                         <h5>Other Services</h5>
                     </div>
@@ -485,7 +485,7 @@ function showRooms(buildingId)
                         </ul>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-4 col-sm-6 col-12">
+                <div class="col-md-4">
                     <div class="footer_heading_area">
                         <h5>Top Street</h5>
                     </div>

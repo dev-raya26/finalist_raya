@@ -28,4 +28,10 @@ Route::get("/forgot",[LoginController::class,"forgot"])->name("forgot");
 Route::post('/forgot-password', [LoginController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [LoginController::class, 'updatePassword'])->name('password.update');
-
+Route::get('/search-users', [UserController::class, 'searchUsers'])
+    ->name('search.users');
+Route::put('/buildings/{id}/toggle-status', [BuildingController::class, 'toggleStatus'])
+    ->name('buildings.toggleStatus');
+Route::delete('/notifications/clear',
+    [UserController::class, 'clearAll'])
+    ->name('notifications.clear');

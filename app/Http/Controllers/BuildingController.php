@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Building;
+use App\Models\Notification;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,8 +12,10 @@ class BuildingController extends Controller
 {
      public function index()
     {
+        $noteCount = Notification::count();
+        $notes = Notification::all();
         $rooms = Building::latest()->get();
-        return view('building', compact('rooms'));
+        return view('building', compact('rooms','noteCount','notes'));
     }
 
     public function store(Request $request)
@@ -65,15 +68,25 @@ class BuildingController extends Controller
 {
     $building = Building::findOrFail($id);
 
-    return view('buildings_show', compact('building'));
+    $rooms = Room::where('building_id', $id)->get();
+     $noteCount = Notification::count();
+        $notes = Notification::all();
+    return view('buildings_show', compact('building', 'rooms','noteCount','notes'));
 }
-
-  public function rooms($id)
+public function toggleStatus($id)
 {
     $building = Building::findOrFail($id);
 
-    $rooms = Room::where('building_id', $id)->get();
+    if ($building->status == 'Active') {
+        $building->status = 'Blocked';
+    } else {
+        $building->status = 'Active';
+    }
 
-    return view('viewrooms', compact('building', 'rooms'));
+    $building->save();
+
+    return back()->with('success', 'Status updated successfully');
 }
+
+  
 }

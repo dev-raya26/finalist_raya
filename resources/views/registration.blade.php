@@ -12,8 +12,14 @@
             + Add User
         </button>
         @endif
-
+        <div class="mb-3">
+    <input type="text"
+           id="searchUser"
+           class="form-control"
+           placeholder="Search by name, phone or email...">
+</div>
         <div class="user-list">
+
            <table class="table table-striped table-sm">
     <thead>
         <tr>
@@ -27,7 +33,7 @@
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id="usersTable">
         @forelse($users as $user)
             <tr>
                 <td>{{ $user->firstname }}</td>
@@ -213,8 +219,71 @@ document.querySelectorAll('.editBtn').forEach(button => {
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+$('#searchUser').on('keyup', function(){
+
+    let search = $(this).val();
+
+    $.ajax({
+        url: "{{ route('search.users') }}",
+        type: "GET",
+        data: {
+            search: search
+        },
+
+        success: function(users){
+
+            let rows = '';
+
+            if(users.length > 0){
+
+                users.forEach(function(user){
+
+                    rows += `
+                    <tr>
+                        <td>${user.firstname}</td>
+                        <td>${user.middlename ?? ''}</td>
+                        <td>${user.lastname}</td>
+                        <td>${user.phone}</td>
+                        <td>${user.email}</td>
+
+                        <td>
+                            <span class="badge bg-info">
+                                ${user.role}
+                            </span>
+                        </td>
+
+                        <td>
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-pencil"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    `;
+                });
+
+            }else{
+
+                rows = `
+                <tr>
+                    <td colspan="7" class="text-center text-danger">
+                        No users found
+                    </td>
+                </tr>
+                `;
+            }
+
+            $('#usersTable').html(rows);
+        }
+    });
+
+});
+</script>
 @if(session('success'))
 <script>
+
 Swal.fire({
     icon: 'success',
     title: 'Success!',

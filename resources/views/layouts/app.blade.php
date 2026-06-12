@@ -315,12 +315,12 @@ li a{
                 Buildings
             </a>
         </li>
-        {{-- <li class="nav-item mb-2">
+        <li class="nav-item mb-2">
             <a href="{{ route('rooms.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-door-open"></i>
                 Rooms
             </a>
-        </li> --}}
+        </li>
         <li class="nav-item mb-2">
             <a href="{{ route('reguser.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-users"></i>
@@ -382,7 +382,93 @@ li a{
 
 <!-- NAVBAR -->
 <div class="navbar">
-    <h3>Dashboard</h3>
+
+    <h3 class="mb-0">Dashboard</h3>
+
+    <div class="d-flex align-items-center gap-3">
+
+        <!-- Notification -->
+        @if(Auth::user()->role == "landload")
+        <div class="dropdown">
+            <button class="btn btn-light position-relative"
+                    type="button"
+                    data-bs-toggle="dropdown">
+
+                <i class="fas fa-bell fs-5"></i>
+                @if($noteCount > 0)
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ $noteCount }}
+                </span>
+                @endif
+
+            </button>
+
+            <ul class="dropdown-menu dropdown-menu-end shadow p-0" style="width:350px;">
+
+    <li class="dropdown-header bg-primary text-white py-2">
+        <strong>Notifications</strong>
+    </li>
+
+    @forelse($notes as $n)
+
+        <li>
+            <a href="#" class="dropdown-item py-3 border-bottom">
+
+                <strong>{{ $n->title }}</strong>
+
+                <div class="small text-muted">
+                    {{ $n->action }}
+                </div>
+
+                <div class="small text-secondary">
+                    <i class="fas fa-clock"></i>
+                    {{ $n->created_at->diffForHumans() }}
+                </div>
+
+            </a>
+        </li>
+
+    @empty
+
+        <li>
+            <div class="dropdown-item text-center text-muted">
+                No notifications found
+            </div>
+        </li>
+
+    @endforelse
+
+    @if($notes->count() > 0)
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+
+        <li class="text-center p-2">
+            <form action="{{ route('notifications.clear') }}"
+                  method="POST">
+                @csrf
+                @method('DELETE')
+
+                <button type="submit"
+                        class="btn btn-danger btn-sm w-100">
+
+                    <i class="fas fa-trash"></i>
+                    Clear All
+
+                </button>
+            </form>
+        </li>
+    @endif
+
+</ul>
+        </div>
+        @endif
+
+        <!-- User Card -->
+        
+
+    </div>
+
 </div>
 
 <!-- MAIN -->

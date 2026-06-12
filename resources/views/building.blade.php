@@ -10,7 +10,7 @@
         <!-- ADD BUTTON -->
         @if(Auth::user()->role=="landload")
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
-            + Add buildng
+            + Add building
         </button>
         @endif
 
@@ -28,19 +28,25 @@
                     @forelse($rooms as $room)
                         <tr>
                             <td>{{ $room->room_name }}</td>
-                            <td>
-                                @if($room->status=="Active")
-                                <span class="badge bg-success">{{ $room->status }}</span>
-                                @endif
-                            </td>
-                           
-                            <td>
+                           <td>
+    @if($room->status == "Active")
+        <span class="badge bg-success">
+            Active
+        </span>
+    @else
+        <span class="badge bg-danger">
+            Blocked
+        </span>
+    @endif
+</td>
+          <td>
+
     <a href="{{ route('buildings.show', $room->id) }}"
        class="btn btn-info btn-sm">
         <i class="fas fa-eye"></i>
     </a>
 
-    <button class="btn btn-warning btn-sm editBtn"
+    <button class="btn btn-primary btn-sm editBtn"
         data-id="{{ $room->id }}"
         data-room_name="{{ $room->room_name }}"
         data-location="{{ $room->location }}"
@@ -49,10 +55,33 @@
         data-bs-target="#editModal">
         <i class="fas fa-edit"></i>
     </button>
-    <a href="{{ route('buildings.rooms', $room->id) }}"
-   class="btn btn-primary btn-sm">
-   View All Rooms
-</a>
+
+    <form action="{{ route('buildings.toggleStatus', $room->id) }}"
+          method="POST"
+          class="d-inline">
+        @csrf
+        @method('PUT')
+
+        @if($room->status == 'Active')
+
+            <button type="submit"
+                    class="btn btn-danger btn-sm"
+                    onclick="return confirm('Block this building?')">
+                <i class="fas fa-ban"></i> Block
+            </button>
+
+        @else
+
+            <button type="submit"
+                    class="btn btn-success btn-sm"
+                    onclick="return confirm('Activate this building?')">
+                <i class="fas fa-check"></i> Activate
+            </button>
+
+        @endif
+
+    </form>
+
 </td>
                         </tr>
                     @empty
