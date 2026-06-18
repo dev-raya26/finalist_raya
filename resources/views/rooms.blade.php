@@ -21,9 +21,9 @@
                     <tr>
                         <th>Room No</th>
                         <th>Price</th>
-                        <th>Type</th>
+                        {{-- <th>Type</th> --}}
                         <th>Status</th>
-                        <th>Image</th>
+                        {{-- <th>Image</th> --}}
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -33,31 +33,41 @@
                         <tr>
                             <td>{{ $room->room_number }}</td>
                             <td>{{ $room->price }}</td>
-                            <td>{{ $room->type }}</td>
+                            {{-- <td>{{ $room->type }}</td> --}}
                             <td>
                                 <span class="badge bg-success">{{ $room->status }}</span>
                             </td>
-                            <td>
+                            {{-- <td>
                                 <img src="{{ asset('images/'.$room->image) }}" width="60" style="border-radius:10px;">
-                            </td>
-                            <td>
-                                {{-- <a href="{{ route('rooms.show', $room->id) }}"
-                                class="btn btn-info btn-sm">
+                            </td> --}}
+                           <td>
+    <div class="d-flex gap-2">
+        
+        <button class="btn btn-primary btn-sm editBtn"
+            data-id="{{ $room->id }}"
+            data-room_number="{{ $room->room_number }}"
+            data-price="{{ $room->price }}"
+            data-type="{{ $room->type }}"
+            data-status="{{ $room->status }}"
+            data-description="{{ $room->description }}"
+            data-bs-toggle="modal"
+            data-bs-target="#editModal">
+            <i class="fas fa-edit"></i>
+        </button>
 
-                                    <i class="fas fa-eye"></i>
-                                </a> --}}
-                                <button class="btn btn-warning btn-sm editBtn"
-                                    data-id="{{ $room->id }}"
-                                    data-room_number="{{ $room->room_number }}"
-                                    data-price="{{ $room->price }}"
-                                    data-type="{{ $room->type }}"
-                                    data-status="{{ $room->status }}"
-                                    data-description="{{ $room->description }}"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editModal">
-                                    Edit
-                                </button>
-                            </td>
+        <form action="{{ route('rooms.destroy', $room->id) }}"
+              method="POST"
+              onsubmit="return confirm('Are you sure you want to delete?');">
+            @csrf
+            @method('DELETE')
+
+            <button type="submit" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+            </button>
+        </form>
+
+    </div>
+</td>
                         </tr>
                     @empty
                         <tr>
@@ -86,7 +96,7 @@
 
                 <div class="modal-body">
 
-                    <select name="building_id" class="form-select mb-2">
+                    <select name="building_id" class="form-select mb-2" required>
                         <option value="">--Select building</option>
 
                         @foreach ($buildings as $b)
@@ -95,19 +105,19 @@
                         @endforeach
                     </select>
 
-                    <input type="text" name="room_number" class="form-control mb-2" placeholder="Room Number">
-                    <input type="text" name="room_size" class="form-control mb-2" placeholder="Room size">
+                    <input type="text" name="room_number" class="form-control mb-2" placeholder="Room Number" required>
+                    <input type="text" name="room_size" class="form-control mb-2" placeholder="Room size" required>
 
-                    <input type="number" name="price" class="form-control mb-2" placeholder="Price">
+                    <input type="number" name="price" class="form-control mb-2" placeholder="Price" required>
 
-                    <input type="text" name="type" class="form-control mb-2" placeholder="Type (Single, Double...)">
+                    <input type="text" name="type" class="form-control mb-2" placeholder="Type (Single, Double...)" required>
                     <input type="hidden" name="status" value="available">
 
                     
 
-                    <textarea name="description" class="form-control mb-2" placeholder="Description"></textarea>
+                    <textarea name="description" class="form-control mb-2" placeholder="Description" required></textarea>
 
-                    <input type="file" name="image" class="form-control mb-2">
+                    <input type="file" name="image" class="form-control mb-2" required>
 
                 </div>
 

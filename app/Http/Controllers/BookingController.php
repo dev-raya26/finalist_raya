@@ -13,7 +13,13 @@ use Illuminate\Support\Facades\Mail;
 class BookingController extends Controller
 {
     public function index(){
+        if(Auth::user()->role=="customer"){
+        $bookings = Booking::with('customer')->where("customer_id",Auth::user()->id)->latest()->get();
+
+        }else{
         $bookings = Booking::with('customer')->latest()->get();
+
+        }
         $buildings = Building::with([
     'rooms' => function ($query) {
         $query->where('status', 'available');
@@ -49,7 +55,7 @@ class BookingController extends Controller
         "action" => "The Ternant ".Auth::user()->firstname." ".Auth::user()->middlename." has made booking",
     ]);
 
-    return back();
+    return back()->with("sucess","Booking submitted successful!");
 }
 
 public function update(Request $request, $id)
@@ -63,38 +69,79 @@ public function update(Request $request, $id)
 
     if ($request->status == 'approved') {
 
-        $email = $booking->customer->email; 
+    // Generate control number
+    $controlNumber = 'CN' . date('Ymd') . rand(100000, 999999);
 
-        Mail::send([], [], function ($message) use ($booking, $email) {
+    // Save control number
+    $booking->control_number = $controlNumber;
+    $booking->save();
 
-            $message->to($email)
-                ->subject('House Booking Confirmation')
-                ->html("
-                    <h2>House Booking Confirmation</h2>
+    $email = $booking->customer->email;
 
-                    <p>Dear {$booking->customer->firstname} {$booking->customer->middlename} {$booking->customer->lastname},</p>
+    Mail::send([], [], function ($message) use ($booking, $email, $controlNumber) {
 
-                    <p>Your house booking has been confirmed.</p>
+        $message->to($email)
+            ->subject('House Booking Confirmation')
+            ->html("
+                <h2>House Booking Confirmation</h2>
 
-                    <p>
-                        <strong>Starting Date:</strong>
-                        {$booking->start_date}
-                    </p>
+                <p>Dear {$booking->customer->firstname} {$booking->customer->middlename} {$booking->customer->lastname},</p>
 
-                    <p>
-                        <strong>End Date:</strong>
-                        {$booking->end_date}
-                    </p>
+                <p>Your house booking has been confirmed.</p>
 
-                    <p>
-                        Please make payment to start living in the house.
-                    </p>
+                <p>
+                    <strong>Starting Date:</strong>
+                    {$booking->start_date}
+                </p>
 
-                    <p>Thank you.</p>
-                ");
-        });
-    }
+                <p>
+                    <strong>End Date:</strong>
+                    {$booking->end_date}
+                </p>
+
+                <p>
+                    <strong>Your Control Number is:</strong>
+                    {$controlNumber}
+                </p>
+
+                <p>
+                    Please make payment using the above control number to start living in the house.
+                </p>
+
+                <p>Thank you.</p>
+            ");
+    });
+}
 
     return back()->with('success', 'Booking status updated successfully.');
+}
+
+
+        public function tenantProfile()
+{
+    $booking = Booking::with([
+    'customer',
+    'room.building',
+    'payment'
+])
+->where('customer_id', Auth::id())
+->firstOrFail();
+
+    $totalPaid = $booking->payment()
+        ->where('status','paid')
+        ->sum('amount');
+
+    $paidMonths = $booking->payment()
+        ->where('status','paid')
+        ->count();
+
+    return view(
+        'tenantprofile',
+        compact(
+            'booking',
+            'totalPaid',
+            'paidMonths'
+        )
+    );
 }
 }

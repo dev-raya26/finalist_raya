@@ -51,9 +51,9 @@ class UserController extends Controller
     'firstname' => 'required',
     'middlename' => 'required',
     'lastname' => 'required',
-    'email' => 'required|email',
+    'email' => 'required|email|unique:system_users,email',
     'phone' => 'required',
-    'password' => 'required|min:6|confirmed',
+    'password' => 'required|min:4|confirmed',
 ],[
     'firstname.required' => 'Please enter your first name.',
     'middlename.required' => 'Please enter your middle name.',
@@ -74,6 +74,10 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
+
+       if (Auth::guard('web')->check() && Auth::user()->role == 'admin') {
+            return back()->with("success","User registered sucess! ");
+        }
 
         return redirect()->route("showlogin")->with('success', 'Registration completed successfully,please login!');
     }
@@ -96,6 +100,16 @@ class UserController extends Controller
     ]);
 
     return back()->with('success', 'User updated successfully');
+}
+
+    public function destroy($id)
+{
+    $user = SystemUser::findOrFail($id);
+
+    $user->delete();
+
+    return redirect()->back()
+        ->with('success', 'User deleted successfully');
 }
     public function clearAll()
 {

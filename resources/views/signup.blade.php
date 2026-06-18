@@ -142,6 +142,7 @@
             <label>Phone</label>
             <input type="text"
                    name="phone"
+                   maxlength="10"
                    value="{{ old('phone') }}"
                    class="form-control @error('phone') is-invalid @enderror">
 

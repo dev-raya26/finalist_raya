@@ -58,8 +58,22 @@
         data-status="{{ $user->status }}"
         data-bs-toggle="modal"
         data-bs-target="#editModal">
-      <i class="fas fa-pencil"></i>
+        <i class="fas fa-pencil"></i>
     </button>
+
+    <form action="{{ route('reguser.destroy', $user->id) }}"
+          method="POST"
+          style="display:inline-block"
+          onsubmit="return confirm('Are you sure you want to delete this user?')">
+
+        @csrf
+        @method('DELETE')
+
+        <button type="submit" class="btn btn-sm btn-danger">
+            <i class="fas fa-trash"></i>
+        </button>
+
+    </form>
 </td>
 <div class="modal fade" id="editModal">
     <div class="modal-dialog">
@@ -172,7 +186,10 @@
                 <input type="email" name="email" class="form-control" placeholder="Email" required>
             </div>
             <div class="col-md-6 mb-2">
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                <input type="password" name="password" class="form-control" value="12345" placeholder="Password" required>
+            </div>
+            <div class="col-md-6 mb-2" style="display: none">
+                <input type="password" name="password_confirmation" value="12345" class="form-control" placeholder="Password" required>
             </div>
         </div>
 

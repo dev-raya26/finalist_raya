@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
      protected $fillable = [
-        'customer_id', 'room_id', 'start_date', 'end_date', 'status','amount'
+        'customer_id', 'room_id', 'start_date', 'end_date', 'status','amount','control_number'
     ];
 
     public function customer()
@@ -19,6 +19,7 @@ class Booking extends Model
     {
         return $this->belongsTo(Room::class);
     }
+    
 
     public function payment()
     {

@@ -14,7 +14,14 @@ class BuildingController extends Controller
     {
         $noteCount = Notification::count();
         $notes = Notification::all();
+        if(Auth::user()->role =="landload"){
+        $rooms = Building::where("landlord_id",Auth::user()->id)->get();
+        }
+        else{
         $rooms = Building::latest()->get();
+
+
+        }
         return view('building', compact('rooms','noteCount','notes'));
     }
 

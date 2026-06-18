@@ -284,9 +284,9 @@ li a{
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+            <a href="{{ route('payments.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-calendar-check"></i>
-                Payment
+                Payments
             </a>
         </li>
         <li class="nav-item mb-2">
@@ -333,6 +333,12 @@ li a{
                 Bookings
             </a>
         </li>
+         <li class="nav-item mb-2">
+            <a href="{{ route('payments.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+                <i class="fa fa-calendar-check"></i>
+                Payments
+            </a>
+        </li>
         <li class="nav-item mb-2">
             <a href="#" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-cog"></i>
@@ -353,15 +359,15 @@ li a{
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+            <a href="{{ route('payments.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-calendar-check"></i>
                 Payments
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+            <a href="{{ route('tenant') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-calendar-check"></i>
-                Location
+                Details
             </a>
         </li>
 
@@ -412,7 +418,7 @@ li a{
     @forelse($notes as $n)
 
         <li>
-            <a href="#" class="dropdown-item py-3 border-bottom">
+            <a href="{{ route('bookings.index') }}" class="dropdown-item py-3 border-bottom">
 
                 <strong>{{ $n->title }}</strong>
 

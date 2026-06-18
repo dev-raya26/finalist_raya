@@ -3,6 +3,7 @@
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\BuildingController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,3 +36,8 @@ Route::put('/buildings/{id}/toggle-status', [BuildingController::class, 'toggleS
 Route::delete('/notifications/clear',
     [UserController::class, 'clearAll'])
     ->name('notifications.clear');
+Route::resource("/payments",PaymentController::class);
+Route::post('/payments/{id}/verify',
+    [PaymentController::class,'verify'])
+    ->name('payments.verify');
+Route::get("/tepro",[BookingController::class,"tenantProfile"])->name("tenant");

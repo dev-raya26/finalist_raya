@@ -8,11 +8,11 @@
         <h3>Building Management</h3>
 
         <!-- ADD BUTTON -->
-        @if(Auth::user()->role=="landload")
+        
         <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
             + Add building
         </button>
-        @endif
+      
 
         <div class="user-list">
             <table class="table table-striped table-sm">

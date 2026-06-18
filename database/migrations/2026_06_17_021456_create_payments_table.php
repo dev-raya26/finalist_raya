@@ -13,13 +13,20 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('booking_id')->constrained()->onDelete('cascade');
-            $table->foreignId('customer_id')->constrained('system_users')->onDelete('cascade');
+
+            $table->foreignId('booking_id')
+                ->constrained()
+                ->onDelete('cascade');
+
             $table->decimal('amount', 10, 2);
-            $table->string('transaction_ref')->nullable();
-            $table->string('status')->default('pending');
+
+            $table->integer('payment_month');
+            $table->integer('payment_year');
+            $table->string('status')->default("pending");
+            $table->timestamp('paid_at')->nullable();
+
             $table->timestamps();
-        });
+                });
     }
 
     /**

@@ -69,7 +69,25 @@ class LoginController extends Controller
     }
         $noteCount = Notification::count();
         $notes = Notification::all();
-        return view("dashboard",compact('notes','noteCount','totalLandlords','totalHouses','totalCustomers','totalBookings','last_users','dates','totals'));
+        // --- SEHEMU YA KUCHUJA DATA ZA CUSTOMER (WEKA HAPA) ---
+    $user = Auth::user();
+    $customerActiveBookingsCount = 0;
+    $customerPendingBookingsCount = 0;
+    $myActiveRooms = [];
+
+    if ($user->role == 'customer') {
+        $customerActiveBookingsCount = Booking::where('customer_id', $user->id)
+            ->where('status', 'approved')
+            ->count();
+        $customerPendingBookingsCount = Booking::where('customer_id', $user->id)
+            ->where('status', 'pending')
+            ->count();
+        $myActiveRooms = Booking::with('room.building')
+            ->where('customer_id', $user->id)
+            ->latest()
+            ->get();
+    }
+        return view("dashboard",compact('customerActiveBookingsCount','myActiveRooms','notes','noteCount','totalLandlords','totalHouses','totalCustomers','totalBookings','last_users','dates','totals'));
     }
      public function login(Request $request)
     {
