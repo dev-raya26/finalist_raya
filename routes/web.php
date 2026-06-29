@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get("/showlogin",[LoginController::class,"showlogin"])->name('showlogin');
@@ -41,3 +42,15 @@ Route::post('/payments/{id}/verify',
     [PaymentController::class,'verify'])
     ->name('payments.verify');
 Route::get("/tepro",[BookingController::class,"tenantProfile"])->name("tenant");
+
+Route::get('/book-room/{id}', function ($id) {
+
+    session(['selected_room' => $id]);
+
+    if (Auth::check()) {
+        return redirect()->route('bookings.index');
+    }
+
+    return redirect()->route('signup');
+
+})->name('book.room');

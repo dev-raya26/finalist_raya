@@ -2,7 +2,12 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-
+<style>
+    .selected-room .card{
+    border:3px solid #0d6efd !important;
+    box-shadow:0 0 15px rgba(13,110,253,.4);
+}
+</style>
 @section('content')
 <div class="main">
     @if(Auth::user()->role == "customer")
@@ -174,7 +179,11 @@
         <div class="row row-cols-1 row-cols-md-3 g-4" id="rooms-wrapper">
             @foreach($buildings as $b)
                 @foreach($b->rooms as $room)
-                    <div class="col room-item-card d-none" data-building-id="{{ $b->id }}">
+                    <div class="col room-item-card d-none
+@if(isset($selectedRoom) && $selectedRoom && $selectedRoom->id == $room->id)
+selected-room
+@endif"
+data-building-id="{{ $b->id }}">
                         <div class="card h-100 border-0 shadow-sm">
                             
                             @if($room->image)
@@ -338,15 +347,27 @@
                         <div><strong>Monthly Rent:</strong> TZS <span id="modal-summary-price"></span></div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold">Select Start Date</label>
-                        <input type="date" name="start_date" id="form_start_date" class="form-control" required>
-                    </div>
+                   <div class="mb-3">
+    <label class="form-label small fw-bold">Select Start Date</label>
+    <input type="date"
+           name="start_date"
+           id="form_start_date"
+           class="form-control"
+           min="{{ date('Y-m-d') }}"
+           value="{{ date('Y-m-d') }}"
+           required>
+</div>
 
-                    <div class="mb-3">
-                        <label class="form-label small fw-bold">Select End Date</label>
-                        <input type="date" name="end_date" id="form_end_date" class="form-control" required>
-                    </div>
+<div class="mb-3">
+    <label class="form-label small fw-bold">Select End Date</label>
+    <input type="date"
+           name="end_date"
+           id="form_end_date"
+           class="form-control"
+           min="{{ date('Y-m-d') }}"
+           value="{{ date('Y-m-d') }}"
+           required>
+</div>
 
                     <div class="mb-2">
                         <label class="form-label small fw-bold text-danger">Total Estimated Amount (TZS)</label>
@@ -395,17 +416,37 @@
     .building-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important; }
     .text-truncate-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 </style>
+<script>
+    document.getElementById('form_start_date').addEventListener('change', function () {
+    document.getElementById('form_end_date').min = this.value;
 
+    if (document.getElementById('form_end_date').value < this.value) {
+        document.getElementById('form_end_date').value = this.value;
+    }
+});
+</script>
+@if(isset($selectedRoom) && $selectedRoom)
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    showRooms(
+        "{{ $selectedRoom->building_id }}",
+        "{{ $selectedRoom->building->room_name }}"
+    );
+
+});
+</script>
+
+@endif
 <script>
 const sectionBuildings = document.getElementById('section-buildings');
 const sectionRooms = document.getElementById('section-rooms');
 const dynamicTitle = document.getElementById('dynamic-building-title');
 
-// 1. Akibonyeza Nyumba/Jengo lolote
 function showRooms(buildingId, buildingName) {
     dynamicTitle.innerText = buildingName;
 
-    // Ficha vyumba vyote kwanza, kisha onesha vyumba vya building hii tu
     document.querySelectorAll('.room-item-card').forEach(card => {
         if (card.dataset.buildingId === buildingId) {
             card.classList.remove('d-none');
@@ -414,38 +455,39 @@ function showRooms(buildingId, buildingName) {
         }
     });
 
-    // Badilisha muonekano (Ficha nyumba, Onesha vyumba)
     sectionBuildings.classList.add('d-none');
     sectionRooms.classList.remove('d-none');
 }
 
-// 2. Kurudi nyuma kwenye list ya Nyumba
 function backToBuildings() {
     sectionRooms.classList.add('d-none');
     sectionBuildings.classList.remove('d-none');
 }
 
-// 3. Akibonyeza Button ya "Book Now" kwenye Chumba husika
 function openBookingForm(roomId, roomNumber, price, buildingName) {
     document.getElementById('hidden_room_id').value = roomId;
     document.getElementById('modal-summary-house').innerText = buildingName;
     document.getElementById('modal-summary-room').innerText = roomNumber;
     document.getElementById('modal-summary-price').innerText = parseFloat(price).toLocaleString();
 
-    // Hifadhi bei ya chumba hiki kwenye form ili itumike kwenye calculator ya tarehe
     document.getElementById('wizardSubmissionForm').dataset.activePrice = price;
 
-    // Safisha fomu iliyopita
-    document.getElementById('form_start_date').value = '';
-    document.getElementById('form_end_date').value = '';
-    document.getElementById('form_total_amount').value = '';
+    const today = new Date().toISOString().split('T')[0];
+    
+document.getElementById('form_start_date').value = today;
+document.getElementById('form_end_date').value = today;
 
-    // Fungua modal ya fomu ya booking
+document.getElementById('form_start_date').min = today;
+document.getElementById('form_end_date').min = today;
+
+document.getElementById('form_total_amount').value = '';
+
+    
     var bookingModal = new bootstrap.Modal(document.getElementById('wizardFormModal'));
     bookingModal.show();
 }
 
-// 4. Kikokotoo cha Bei ya jumla kulingana na Tarehe zilizochaguliwa (Auto-calculation)
+
 function calculateRentAmount() {
     const form = document.getElementById('wizardSubmissionForm');
     let price = form.dataset.activePrice;
@@ -459,12 +501,11 @@ function calculateRentAmount() {
     let end = new Date(endVal);
     price = parseFloat(price);
 
-    // Tafuta miezi iliyopo katikati ya tarehe hizo
     let months = (end.getFullYear() - start.getFullYear()) * 12;
     months -= start.getMonth();
     months += end.getMonth();
 
-    // Kama ni chini ya mwezi mmoja, hesabu kama mwezi 1 wa kuanzia
+   
     months = months <= 0 ? 1 : months;
     let total = months * price;
 
@@ -474,7 +515,7 @@ function calculateRentAmount() {
 document.getElementById('form_start_date').addEventListener('change', calculateRentAmount);
 document.getElementById('form_end_date').addEventListener('change', calculateRentAmount);
 
-// 5. Landlord Mapping ya ku-approve bookings kwenye jedwali la siri
+
 document.querySelectorAll('.editBtn').forEach(button => {
     button.addEventListener('click', function () {
         let id = this.dataset.id;

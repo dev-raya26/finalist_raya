@@ -2,7 +2,8 @@
 <html>
 <head>
     <title>Register</title>
-
+    <link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
 
  <style>
@@ -140,7 +141,7 @@
 
         <div class="col-md-4">
             <label>Phone</label>
-            <input type="text"
+            <input type="number"
                    name="phone"
                    maxlength="10"
                    value="{{ old('phone') }}"
@@ -154,18 +155,28 @@
         </div>
 
         <div class="col-md-4">
-            <label>Password</label>
-            <input type="password"
-                   name="password"
-                   id="password"
-                   class="form-control @error('password') is-invalid @enderror">
+    <label>Password</label>
 
-            @error('password')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @enderror
-        </div>
+    <div class="input-group">
+        <input type="password"
+               name="password"
+               id="password"
+               autocomplete="new-password"
+
+               class="form-control @error('password') is-invalid @enderror">
+
+        <span class="input-group-text" style="cursor:pointer;"
+              onclick="togglePassword('password', 'toggleIcon1')">
+            <i class="bi bi-eye" id="toggleIcon1"></i>
+        </span>
+
+        @error('password')
+            <div class="invalid-feedback">
+                {{ $message }}
+            </div>
+        @enderror
+    </div>
+</div>
 
     </div>
 
@@ -173,14 +184,22 @@
     <div class="row mb-3">
 
         <div class="col-md-12">
-            <label>Confirm Password</label>
-            <input type="password"
-                   name="password_confirmation"
-                   id="confirmPassword"
-                   class="form-control">
+    <label>Confirm Password</label>
 
-            <small id="message"></small>
-        </div>
+    <div class="input-group">
+        <input type="password"
+               name="password_confirmation"
+               id="confirmPassword"
+               class="form-control">
+
+        <span class="input-group-text" style="cursor:pointer;"
+              onclick="togglePassword('confirmPassword', 'toggleIcon2')">
+            <i class="bi bi-eye" id="toggleIcon2"></i>
+        </span>
+    </div>
+
+    <small id="message"></small>
+</div>
 
     </div>
 
@@ -220,6 +239,21 @@
     </div>
 
 </div>
+<script>
+function togglePassword(inputId, iconId) {
+    let input = document.getElementById(inputId);
+    let icon = document.getElementById(iconId);
 
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("bi-eye");
+        icon.classList.add("bi-eye-slash");
+    } else {
+        input.type = "password";
+        icon.classList.remove("bi-eye-slash");
+        icon.classList.add("bi-eye");
+    }
+}
+</script>
 </body>
 </html>

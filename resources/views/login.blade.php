@@ -5,6 +5,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         body{
@@ -55,9 +57,23 @@
             </div>
 
             <div class="mb-3">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control" placeholder="Enter password">
-            </div>
+    <label>Password</label>
+
+    <div class="input-group">
+        <input type="password"
+               name="password"
+               id="password"
+               autocomplete="new-password"
+               class="form-control"
+               placeholder="Enter password">
+
+        <span class="input-group-text"
+              style="cursor:pointer;"
+              onclick="togglePassword()">
+            <i class="bi bi-eye" id="toggleIcon"></i>
+        </span>
+    </div>
+</div>
 
             <a href="{{ route('forgot') }}" style="text-align: right">Forgot password?</a>
 
@@ -73,6 +89,21 @@
     </div>
 
 </div>
+<script>
+function togglePassword() {
+    let password = document.getElementById('password');
+    let icon = document.getElementById('toggleIcon');
 
+    if (password.type === 'password') {
+        password.type = 'text';
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    } else {
+        password.type = 'password';
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    }
+}
+</script>
 </body>
 </html>

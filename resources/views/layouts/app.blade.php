@@ -241,7 +241,7 @@ li a{
         @elseif(Auth::user()->role=="landload")
     <h4 class="text-center mb-3 fw-bold" style="font-size: 20px">LANDLORD PANEL</h4>
     @elseif(Auth::user()->role=="customer")
-    <h4 class="text-center mb-3 fw-bold" style="font-size: 20px">CUSTOMER PANEL</h4>
+    <h4 class="text-center mb-3 fw-bold" style="font-size: 20px">TARNENT PANEL</h4>
 
 
       @endif

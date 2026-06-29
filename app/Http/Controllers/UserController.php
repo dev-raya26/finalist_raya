@@ -52,7 +52,7 @@ class UserController extends Controller
     'middlename' => 'required',
     'lastname' => 'required',
     'email' => 'required|email|unique:system_users,email',
-    'phone' => 'required',
+    'phone' => 'required|min:0|min_digits:10|max_digits:10',
     'password' => 'required|min:4|confirmed',
 ],[
     'firstname.required' => 'Please enter your first name.',

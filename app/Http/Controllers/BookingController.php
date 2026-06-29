@@ -12,27 +12,53 @@ use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
-    public function index(){
-        if(Auth::user()->role=="customer"){
-        $bookings = Booking::with('customer')->where("customer_id",Auth::user()->id)->latest()->get();
+    public function index()
+{
+    if (Auth::user()->role == "customer") {
 
-        }else{
-        $bookings = Booking::with('customer')->latest()->get();
+        $bookings = Booking::with('customer')
+            ->where("customer_id", Auth::user()->id)
+            ->latest()
+            ->get();
 
+    } else {
+
+        $bookings = Booking::with('customer')
+            ->latest()
+            ->get();
+    }
+
+    $buildings = Building::with([
+        'rooms' => function ($query) {
+            $query->where('status', 'available');
         }
-        $buildings = Building::with([
-    'rooms' => function ($query) {
+    ])
+    ->whereHas('rooms', function ($query) {
         $query->where('status', 'available');
+    })
+    ->get();
+
+    $selectedRoom = null;
+
+    if (session()->has('selected_room')) {
+        $selectedRoom = Room::with('building')
+            ->find(session('selected_room'));
     }
-])
-->whereHas('rooms', function ($query) {
-    $query->where('status', 'available');
-})
-->get();
-        $noteCount = Notification::count();
-        $notes = Notification::all();
-        return view('booking',compact('bookings','buildings','notes','noteCount'));
-    }
+
+    $noteCount = Notification::count();
+    $notes = Notification::all();
+
+    return view(
+        'booking',
+        compact(
+            'bookings',
+            'buildings',
+            'notes',
+            'noteCount',
+            'selectedRoom'
+        )
+    );
+}
     public function store(Request $request)
 {
     Booking::create([
@@ -43,6 +69,7 @@ class BookingController extends Controller
         'amount' => $request->amount,
         'status' => $request->status ?? 'pending',
     ]);
+    session()->forget('selected_room');
     $room = Room::find($request->room_id);
 
     if ($room) {
@@ -55,7 +82,7 @@ class BookingController extends Controller
         "action" => "The Ternant ".Auth::user()->firstname." ".Auth::user()->middlename." has made booking",
     ]);
 
-    return back()->with("sucess","Booking submitted successful!");
+    return back()->with("success","Booking submitted successful,You will receive email within 24 hours!");
 }
 
 public function update(Request $request, $id)

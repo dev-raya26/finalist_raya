@@ -252,7 +252,7 @@
             <!-- Room Image -->
             <div class="position-relative">
 
-                <a href="{{ route('signup') }}">
+                <a href="{{ route('book.room',$room->id) }}"></a>
                     <img src="{{ asset('images/' . $room->image) }}"
                          alt="room image"
                          style="height:250px;width:100%;object-fit:cover;">
@@ -320,8 +320,8 @@
                         </small>
                     </div>
 
-                    <a href="{{ route('signup') }}"
-                       class="btn btn-primary rounded-pill px-4">
+                    <a href="{{ route('book.room',$room->id) }}"
+                    class="btn btn-primary rounded-pill px-4">
                         Book Now
                     </a>
 

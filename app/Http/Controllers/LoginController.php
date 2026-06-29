@@ -90,32 +90,40 @@ class LoginController extends Controller
         return view("dashboard",compact('customerActiveBookingsCount','myActiveRooms','notes','noteCount','totalLandlords','totalHouses','totalCustomers','totalBookings','last_users','dates','totals'));
     }
      public function login(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
+{
+    $credentials = $request->only('email', 'password');
 
-        $user = SystemUser::where('email', $request->email)->first();
+    $user = SystemUser::where('email', $request->email)->first();
 
-        if (!$user || $user->status !== 'active') {
-            return back()->with('error', 'Account not active or not found');
-        }
-        if (Auth::attempt($credentials)) {
-
-            $request->session()->regenerate();
-            if (Auth::user()->role == 'admin') {
-                return redirect()->route('dashboard');
-            }
-
-            if (Auth::user()->role == 'landlord') {
-                 return redirect()->route('dashboard');
-
-            }
-
-            return redirect()->route('dashboard');
-            
-        }
-
-        return back()->with('error', 'Invalid email or password');
+    if (!$user || $user->status !== 'active') {
+        return back()->with('error', 'Account not active or not found');
     }
+
+    if (Auth::attempt($credentials)) {
+
+        $request->session()->regenerate();
+
+        // Kama alikuwa amechagua room
+        if (
+            Auth::user()->role == 'customer' &&
+            session()->has('selected_room')
+        ) {
+            return redirect()->route('bookings.index');
+        }
+
+        if (Auth::user()->role == 'admin') {
+            return redirect()->route('dashboard');
+        }
+
+        if (Auth::user()->role == 'landlord') {
+            return redirect()->route('dashboard');
+        }
+
+        return redirect()->route('dashboard');
+    }
+
+    return back()->with('error', 'Invalid email or password');
+}
     public function logout(Request $request)
     {
         Auth::logout();
