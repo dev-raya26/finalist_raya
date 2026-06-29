@@ -185,7 +185,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="section_heading_center">
-                    <h2>Karibu Upate Makazi Bora Kwa Bei Nafuu</h2>
+                    <h2>Welcome to Find Quality Housing at an Affortable price</h2>
                 </div>
             </div>
         </div>
@@ -423,11 +423,11 @@ function showRooms(buildingId)
                     <div class="footer_first_area">
                         <div class="footer_inquery_area">
                             <h5>Call 24/7 for any help</h5>
-                            <h3> <a href="">tel:+255 0772 459034</a></h3>
+                            <h3> <a href="">tel:+255772 70 3994</a></h3>
                         </div>
                         <div class="footer_inquery_area">
                             <h5>Mail to our support team</h5>
-                            <h3> <a href="mailto:support@domain.com">Raya@gmail.com</a></h3>
+                            <h3> <a href="mailto:support@domain.com">rayaally34@gmail.com</a></h3>
                         </div>
                         <div class="footer_inquery_area">
                             <h5>Follow us on</h5>
