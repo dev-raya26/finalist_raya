@@ -95,6 +95,30 @@ body {
 .card h3 {
     font-size: 18px;
 }
+.notification-dropdown{
+    width: 350px;
+    max-height: 450px;   /* Urefu wa mwisho */
+    overflow-y: auto;    /* Scroll ya juu/chini */
+    overflow-x: hidden;
+}
+
+/* Scrollbar nzuri (Chrome, Edge, Safari) */
+.notification-dropdown::-webkit-scrollbar{
+    width: 6px;
+}
+
+.notification-dropdown::-webkit-scrollbar-track{
+    background: #f1f1f1;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb{
+    background: #bdbdbd;
+    border-radius: 10px;
+}
+
+.notification-dropdown::-webkit-scrollbar-thumb:hover{
+    background: #888;
+}
 
 .card p {
     font-size: 13px;
@@ -290,7 +314,7 @@ li a{
             </a>
         </li>
         <li class="nav-item mb-2">
-            <a href="{{ route('bookings.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+            <a href="{{ route('report.index') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
                 <i class="fa fa-calendar-check"></i>
                 Report
             </a>
@@ -409,7 +433,7 @@ li a{
 
             </button>
 
-            <ul class="dropdown-menu dropdown-menu-end shadow p-0" style="width:350px;">
+            <ul class="dropdown-menu dropdown-menu-end shadow p-0 notification-dropdown">
 
     <li class="dropdown-header bg-primary text-white py-2">
         <strong>Notifications</strong>
