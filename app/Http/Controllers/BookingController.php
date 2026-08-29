@@ -97,7 +97,7 @@ public function update(Request $request, $id)
     if ($request->status == 'approved') {
 
     // Generate control number
-    $controlNumber = 'CN' . date('Ymd') . rand(100000, 999999);
+    $controlNumber = '0772703994';
 
     // Save control number
     $booking->control_number = $controlNumber;
@@ -127,12 +127,15 @@ public function update(Request $request, $id)
                 </p>
 
                 <p>
-                    <strong>Your Control Number is:</strong>
+                    <strong>Use this Mobile Number to Pay:</strong>
                     {$controlNumber}
+                    <strong>Name: RAYA MOHAMED</strong>
+
+
                 </p>
 
                 <p>
-                    Please make payment using the above control number to start living in the house.
+                    Please make payment using the above Mobile number to start living in the house.
                 </p>
 
                 <p>Thank you.</p>

@@ -7,12 +7,15 @@ use App\Models\Building;
 use App\Models\Notification;
 use App\Models\Room;
 use App\Models\SystemUser;
+use App\Models\OnlineUsers;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -22,15 +25,43 @@ class LoginController extends Controller
     public function signup(){
         return view("signup");
     }
-    public function home(){
+    public function home()
+{
+    // Update status ya kila building
+    $allBuildings = Building::with('rooms')->get();
+
+    foreach ($allBuildings as $building) {
+
+        $totalRooms = $building->rooms->count();
+
+        $bookedRooms = $building->rooms
+            ->where('status', 'booked')
+            ->count();
+
+        // Kama kuna rooms na zote zimebooked
+        if ($totalRooms > 0 && $totalRooms == $bookedRooms) {
+            $building->status = 'Booked';
+        } else {
+            $building->status = 'Active';
+        }
+
+        $building->save();
+    }
+
+    // Chukua buildings baada ya status kusasishwa
     $buildings = Building::with([
         'rooms',
         'landlord'
     ])->get();
-    
-    $rooms = Room::with('building.landlord')->where('status','!=','booked')->get();
-    return view("welcome", compact('rooms','buildings'));
+
+    // Chukua rooms ambazo hazijabooked
+    $rooms = Room::with('building.landlord')
+        ->where('status', '!=', 'Booked')
+        ->get();
+
+    return view('welcome', compact('rooms', 'buildings'));
 }
+
     public function dashboard(){
         $totalLandlords = SystemUser::where('role', 'landload')->count();
         $totalCustomers = SystemUser::where('role', 'customer')->count();
@@ -39,7 +70,8 @@ class LoginController extends Controller
         if(Auth::user()->role=="landload"){
         $last_users = SystemUser::latest()->where('role','customer')->get();
         }elseif(Auth::user()->role=="admin"){
-        $last_users = SystemUser::latest()->where('role','!=','admin')->get();}
+        $last_users = OnlineUsers::with('user')->get();
+        }
         else{
         $last_users = SystemUser::latest()->where('role','customer')->get();
 
@@ -93,17 +125,40 @@ class LoginController extends Controller
 {
     $credentials = $request->only('email', 'password');
 
+    // Key ya kumtambua anayefanya login
+    $key = Str::lower($request->email) . '|' . $request->ip();
+
+    // Check kama tayari ameblockiwa
+    if (RateLimiter::tooManyAttempts($key, 3)) {
+
+        $seconds = RateLimiter::availableIn($key);
+
+        return redirect()->route('blocked')
+            ->with('seconds', $seconds);
+    }
+
+    // Tafuta user
     $user = SystemUser::where('email', $request->email)->first();
 
     if (!$user || $user->status !== 'active') {
-        return back()->with('error', 'Account not active or not found');
+
+        RateLimiter::hit($key, 60);
+
+        return back()->with(
+            'error',
+            'Account not active or not found'
+        );
     }
 
+    // Jaribu login
     if (Auth::attempt($credentials)) {
+
+        // Login imefanikiwa, reset failed attempts
+        RateLimiter::clear($key);
 
         $request->session()->regenerate();
 
-        // Kama alikuwa amechagua room
+        // Customer aliyekuwa amechagua room
         if (
             Auth::user()->role == 'customer' &&
             session()->has('selected_room')
@@ -111,28 +166,56 @@ class LoginController extends Controller
             return redirect()->route('bookings.index');
         }
 
+        // Admin
         if (Auth::user()->role == 'admin') {
             return redirect()->route('dashboard');
         }
 
+        // Landlord
         if (Auth::user()->role == 'landlord') {
             return redirect()->route('dashboard');
+        }
+
+        // Online users
+        if (Auth::user()->role != 'admin') {
+
+            OnlineUsers::create([
+                'user_id' => Auth::user()->id,
+            ]);
         }
 
         return redirect()->route('dashboard');
     }
 
-    return back()->with('error', 'Invalid email or password');
+    // Password/email sio sahihi
+    RateLimiter::hit($key, 60);
+
+    $attempts = RateLimiter::attempts($key);
+
+    // Kama amefikisha attempts 3
+    if ($attempts >= 2) {
+
+        return redirect()->route('blocked')
+            ->with('seconds', 60);
+    }
+
+    // Bado ana attempts
+    $remaining = 3 - $attempts;
+
+    return redirect->route('showlogin')->with(
+        'error',
+        "Invalid email or password. You have {$remaining} attempts remaining."
+    );
 }
     public function logout(Request $request)
-    {
-        Auth::logout();
+{
+    OnlineUsers::where('user_id', Auth::user()->id)->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect('/showlogin');
-    }
+    Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
+    return redirect('/showlogin');
+}
     public function forgot(){
         return view("forgotpassword");
     }

@@ -44,7 +44,28 @@ class RoomController extends Controller
         'image' => $filename
     ]);
 
-    return back();
+    // Pata building
+    $building = Building::find($request->building_id);
+
+    // Jumla ya vyumba
+    $totalRooms = $building->rooms()->count();
+
+    // Vyumba vilivyo Blocked
+    $blockedRooms = $building->rooms()
+        ->where('status', 'booked')
+        ->count();
+
+    if ($totalRooms > 0 && $totalRooms == $blockedRooms) {
+        $building->update([
+            'status' => 'Blocked'
+        ]);
+    } else {
+        $building->update([
+            'status' => 'Available'
+        ]);
+    }
+
+    return back()->with('success', 'Room added successfully.');
 }
 
     public function destroy($id)

@@ -320,12 +320,7 @@ li a{
             </a>
         </li>
 
-        <li class="nav-item mt-3">
-            <a href="#" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
-                <i class="fa fa-cog"></i>
-                Settings
-            </a>
-        </li>
+        
         @elseif (Auth::user()->role=="landload")
         <li class="nav-item mb-2">
             <a href="{{ route('dashboard') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
@@ -363,12 +358,7 @@ li a{
                 Payments
             </a>
         </li>
-        <li class="nav-item mb-2">
-            <a href="#" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
-                <i class="fa fa-cog"></i>
-                Settings
-            </a>
-        </li>
+        
         @elseif (Auth::user()->role=="customer")
         <li class="nav-item mb-2">
             <a href="{{ route('dashboard') }}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
@@ -397,7 +387,13 @@ li a{
 
 
         @endif
-        <li class="nav-item mb-2">
+        <li class="nav-item mt-3">
+            <a href="{{ route('settings.index')}}" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link">
+                <i class="fa fa-cog"></i>
+                Settings
+            </a>
+        </li>
+        <li class="nav-item mb-2 mt-5">
     <form method="POST" action="{{ route('logout') }}">
         @csrf
         <button type="submit" class="nav-link text-white d-flex align-items-center gap-2 sidebar-link border-0 bg-transparent w-100 text-start">

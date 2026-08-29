@@ -123,8 +123,8 @@ new Chart(ctx, {
                 <i class="fa fa-user"></i>
             </div>
             <div class="info">
-                <h4>{{ $l->firstname }} {{ $l->middlename }}</h4>
-                <p>{{ $l->role }}</p>
+                <h4>{{ $l->user->firstname }} {{ $l->user->middlename }}</h4>
+                <p>{{ $l->user->role }}</p>
             </div>
             <span class="status online"></span>
         </div>

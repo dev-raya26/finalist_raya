@@ -10,13 +10,14 @@
         
 
         <div class="card-body">
-
+         @if(Auth::user()->role =="customer")
             <button class="btn btn-success mb-3"
                     data-bs-toggle="modal"
                     data-bs-target="#paymentModal">
                 <i class="fa fa-plus"></i>
                 Make Payment
             </button>
+            @endif
 
             <div class="table-responsive">
 
@@ -25,7 +26,6 @@
                     <thead class="table-light">
                         <tr>
                             <th>#</th>
-                            <th>Control Number</th>
                             <th>Customer</th>
                             <th>Amount</th>
                             <th>Month</th>
@@ -42,10 +42,6 @@
                         <tr>
 
                             <td>{{ $payment->id }}</td>
-
-                            <td>
-                                {{ $payment->booking->control_number }}
-                            </td>
 
                             <td>
                                 {{ $payment->booking->customer->firstname }}
@@ -164,7 +160,7 @@
                         <!-- Control Number -->
                         <div class="mb-3">
                             <label class="form-label">
-                                Control Number
+                                Mobile Number
                             </label>
 
                             <input type="text"

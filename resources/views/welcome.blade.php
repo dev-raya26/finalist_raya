@@ -25,8 +25,9 @@
 </head>
 <style>
 .hero-section {
-    height: 90vh;
-    background: url('{{ asset("images/img11.jpeg") }}') no-repeat center center/cover;
+    height: 100vh;
+    /* hapa usisahau jina la picha liwe katika folder la images */
+    background: url('{{ asset("images/build2.jpg") }}') no-repeat center center/cover;
     position: relative;
 }
 
@@ -100,57 +101,90 @@
     object-fit: cover; /* muhimu sana */
 }
 
-/* CONTENT IKAE SAWA */
-.theme_two_box_content{
-    flex: 1;
-    padding: 15px;
+.theme_common_box_two{
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* TITLE ISIPANUKE SANA */
+/* IMAGE */
+.theme_two_box_img{
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+
+.theme_two_box_img img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CONTENT */
+.theme_two_box_content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+/* Building Name */
 .theme_two_box_content h4{
     min-height: 50px;
+    font-size: 20px;
+    font-weight: 600;
 }
 
-/* PRICE IBANWE CHINI */
-.theme_two_box_content h3{
+/* Description iwe mistari 3 tu */
+.theme_two_box_content .description{
+    color: #000;
+    min-height: 72px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* mistari 3 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 15px;
+}
+
+/* Owner */
+.theme_two_box_content .owner{
+    min-height: 24px;
+    margin-top: 10px;
+}
+
+/* Button ibaki chini */
+.theme_two_box_content .btn{
     margin-top: auto;
 }
 </style>
 <body>
     <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="#">HouseRent</a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('home') }}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('signup') }}">Sign up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('showlogin') }}">Login</a>
-                </li>
-                
-            </ul>
-        </div>
-    </div>
-</nav>
 <!-- Hero Section -->
-<section class="hero-section d-flex align-items-center">
+<section class="hero-section position-relative d-flex align-items-center">
+
+    <!-- Links juu ya picha -->
+    <div class="position-absolute top-0 end-0 p-4">
+        <a href="{{ route('signup') }}" class="btn btn-outline-light me-2">
+            Sign Up
+        </a>
+
+        <a href="{{ route('showlogin') }}" class="btn btn-light">
+            Login
+        </a>
+    </div>
+
+    <!-- Hero Content -->
     <div class="container text-center text-white">
         <h1 class="typing-text"></h1>
         <p class="mt-3">Find your perfect home easily</p>
     </div>
+
 </section>
     <!-- preloader Area -->
     <div class="preloader">
@@ -201,35 +235,49 @@
             <div class="theme_common_box_two img_hover">
 
                 <div class="theme_two_box_img"
-                     onclick="showRooms({{ $building->id }})"
-                     style="cursor:pointer">
+@if($building->status == 'Booked')
+    style="cursor:not-allowed;opacity:0.5"
+@else
+    onclick="showRooms({{ $building->id }})"
+    style="cursor:pointer"
+@endif
+>
+    <img src="{{ asset('images/' . $building->image) }}"
+         style="height:250px;width:100%;object-fit:cover;">
 
-                    <img src="{{ asset('images/' . $building->image) }}"
-                         style="height:250px;width:100%;object-fit:cover;">
+    @if($building->status == 'Booked')
+        <span class="badge bg-danger position-absolute"
+              style="top:10px;right:10px;">
+            Fully Booked
+        </span>
+    @endif
+</div>
 
-                    <p>
-                        <i class="fas fa-map-marker-alt"></i>
-                        {{ $building->location }}
-                    </p>
+               <div class="theme_two_box_content text-center">
 
-                </div>
+    <p style="color:black;">
+        <i class="fas fa-map-marker-alt"></i>
+        {{ $building->location }}
+    </p>
 
-                <div class="theme_two_box_content text-center">
+    <h4>{{ $building->name }}</h4>
 
-                    <h4>{{ $building->name }}</h4>
+    <p class="description">
+        {{ $building->description }}
+    </p>
 
-                    <p>
-                        <strong>Owner:</strong>
-                        {{ $building->landlord->firstname }}
-                        {{ $building->landlord->lastname }}
-                    </p>
+    <p class="owner">
+        <strong>Owner:</strong>
+        {{ $building->landlord->firstname }}
+        {{ $building->landlord->lastname }}
+    </p>
 
-                    <button class="btn btn-sm btn-primary mt-2"
-                            onclick="openMap('{{ $building->location }}')">
-                        View Location
-                    </button>
+    <button class="btn btn-sm btn-primary"
+            onclick="openMap('{{ $building->location }}')">
+        View Location
+    </button>
 
-                </div>
+</div>
 
             </div>
 
@@ -238,6 +286,7 @@
         </div>
 
     </div>
+
 </div>
 
         <!-- ROOMS -->
@@ -423,19 +472,19 @@ function showRooms(buildingId)
                     <div class="footer_first_area">
                         <div class="footer_inquery_area">
                             <h5>Call 24/7 for any help</h5>
-                            <h3> <a href="">tel:+255772 70 3994</a></h3>
+                            <h3>tel:+255772 70 3994</h3>
                         </div>
                         <div class="footer_inquery_area">
                             <h5>Mail to our support team</h5>
-                            <h3> <a href="mailto:support@domain.com">rayaally34@gmail.com</a></h3>
+                            <h3>rayaally34@gmail.com</h3>
                         </div>
                         <div class="footer_inquery_area">
                             <h5>Follow us on</h5>
                             <ul class="soical_icon_footer">
-                                <li><a href="#!"><i class="fab fa-facebook"></i></a></li>
-                                <li><a href="#!"><i class="fab fa-twitter-square"></i></a></li>
-                                <li><a href="#!"><i class="fab fa-instagram"></i></a></li>
-                                <li><a href="#!"><i class="fab fa-linkedin"></i></a></li>
+                                <li><i class="fab fa-facebook"></i></li>
+                                <li><i class="fab fa-twitter-square"></i></li>
+                                <li><i class="fab fa-instagram"></i></li>
+                                <li><i class="fab fa-linkedin"></i></li>
                             </ul>
                         </div>
                     </div>
@@ -476,12 +525,12 @@ function showRooms(buildingId)
                     </div>
                     <div class="footer_link_area">
                         <ul>
-                            <li><a href="#">Kutafuta Vyumba vya Kupanga</a></li>
-                            <li><a href="#">Kuweka Tangazo la Chumba</a></li>
-                            <li><a href="#">Jinsi ya Kupata Mpangaji</a></li>
-                            <li><a href="#">Masharti ya Upangaji</a></li>
-                            <li><a href="#">Wamiliki wa Nyumba (Landlords)</a></li>
-                            <li><a href="#">Ongeza Chumba Chako</a></li>
+                           <li>Search for Rental Rooms</li>
+<li>Post a Room Listing</li>
+<li>How to Find a Tenant</li>
+<li>Rental Terms and Conditions</li>
+<li>Property Owners (Landlords)</li>
+<li>Add Your Room</li>
                         </ul>
                     </div>
                 </div>
@@ -491,12 +540,12 @@ function showRooms(buildingId)
                     </div>
                     <div class="footer_link_area">
                         <ul>
-                            <li><a href="room-details.html">Fuoni</a></li>
-                            <li><a href="hotel-details.html">Bububu</a></li>
-                            <li><a href="hotel-booking.html">Mjini</a></li>
-                            <li><a href="tour-search.html">Chukwani</a></li>
-                            <li><a href="tour-booking.html">Ki/samaki </a></li>
-                            <li><a href="tour-guides.html">Mlandege</a></li>
+                            <li>Fuoni</li>
+                            <li>Bububu</li>
+                            <li>Mjini</li>
+                            <li>Chukwani</li>
+                            <li>Ki/samaki </li>
+                            <li>Mlandege</li>
                         </ul>
                     </div>
                 </div>
@@ -508,14 +557,10 @@ function showRooms(buildingId)
             <div class="row align-items-center">
                 <div class="co-lg-6 col-md-6 col-sm-12 col-12">
                     <div class="copyright_left">
-                        <p>Copyright © 2022 All Rights Reserved</p>
+                        <p>Copyright © 2026 All Rights Reserved.</p>
                     </div>
                 </div>
-                <div class="co-lg-6 col-md-6 col-sm-12 col-12">
-                    <div class="copyright_right">
-                        <img src="assets/img/common/cards.png" alt="img">
-                    </div>
-                </div>
+               
             </div>
         </div>
     </div>

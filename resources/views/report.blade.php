@@ -157,7 +157,7 @@
     <div class="text-center mb-4">
         
 
-        <h3>HOUSE RENT MANAGEMENT SYSTEM</h3>
+        <h3>BUILDING RENT COLLECTION SYSTEM</h3>
 
         <h5>REVENUE & PAYMENTS REPORT</h5>
 

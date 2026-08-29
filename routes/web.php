@@ -7,6 +7,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingController;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +17,19 @@ Route::post("/login",[LoginController::class,"login"])->name('login');
 Route::post("/logout",[LoginController::class,"logout"])->name('logout');
 Route::get("/signup",[LoginController::class,"signup"])->name('signup');
 Route::get("/",[LoginController::class,"home"])->name('home');
+Route::get("/forgot",[LoginController::class,"forgot"])->name("forgot");
+
+Route::post('/forgot-password', [LoginController::class, 'sendResetLink'])->name('password.email');
+Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
+Route::post('/reset-password', [LoginController::class, 'updatePassword'])->name('password.update');
+
+Route::middleware(['check.user', 'prevent.back'])->group(function () {
+
+Route::get('/login-blocked', function () {
+    return view('blocked');
+})->name('blocked');
+
+
 Route::get("/dashboard",[LoginController::class,"dashboard"])->name('dashboard');
 Route::resource("/reguser",UserController::class);
 Route::resource('buildings', BuildingController::class);
@@ -26,11 +41,7 @@ Route::get('/buildings/{id}', [BuildingController::class, 'show'])
     ->name('buildings.show');
 Route::get('/buildings/{id}/rooms', [BuildingController::class, 'rooms'])
     ->name('buildings.rooms');
-Route::get("/forgot",[LoginController::class,"forgot"])->name("forgot");
 
-Route::post('/forgot-password', [LoginController::class, 'sendResetLink'])->name('password.email');
-Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
-Route::post('/reset-password', [LoginController::class, 'updatePassword'])->name('password.update');
 Route::get('/search-users', [UserController::class, 'searchUsers'])
     ->name('search.users');
 Route::put('/buildings/{id}/toggle-status', [BuildingController::class, 'toggleStatus'])
@@ -56,3 +67,7 @@ Route::get('/book-room/{id}', function ($id) {
     return redirect()->route('signup');
 
 })->name('book.room');
+Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::put('/settings/profile', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
+    Route::put('/settings/password', [SettingController::class, 'updatePassword'])->name('settings.update-password');
+});
