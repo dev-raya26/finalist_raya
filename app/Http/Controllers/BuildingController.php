@@ -30,7 +30,7 @@ class BuildingController extends Controller
          $request->validate([
         'room_name' => 'required',
         'location' => 'required',
-        'image' => 'image|mimes:jpg,jpeg,png|max:2048'
+        'image' => 'image|mimes:jpg,jpeg,png|max:10000'
     ]);
         if ($request->hasFile('image')) {
 
@@ -56,12 +56,17 @@ class BuildingController extends Controller
 
     public function update(Request $request, $id)
     {
-        $room = Room::findOrFail($id);
+        $room = Building::findOrFail($id);
 
-        if($request->hasFile('image')){
-            $image = $request->file('image')->store('rooms','public');
-            $room->image = $image;
-        }
+        if ($request->hasFile('image')) {
+
+    $file = $request->file('image');
+    $filename = time() . '_' . $file->getClientOriginalName();
+
+    $file->move(public_path('images'), $filename);
+
+    $room->image = $filename;
+}
 
         $room->update([
             'room_name' => $request->room_name,
@@ -69,7 +74,7 @@ class BuildingController extends Controller
             'description' => $request->description,
         ]);
 
-        return back();
+        return back()->with('success','Successfully!');
     }
     public function show($id)
 {

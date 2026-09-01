@@ -18,11 +18,21 @@ Route::post("/logout",[LoginController::class,"logout"])->name('logout');
 Route::get("/signup",[LoginController::class,"signup"])->name('signup');
 Route::get("/",[LoginController::class,"home"])->name('home');
 Route::get("/forgot",[LoginController::class,"forgot"])->name("forgot");
+Route::get('/book-room/{id}', function ($id) {
 
+    session(['selected_room' => $id]);
+
+    if (Auth::check()) {
+        return redirect()->route('bookings.index');
+    }
+
+    return redirect()->route('signup');
+
+})->name('book.room');
 Route::post('/forgot-password', [LoginController::class, 'sendResetLink'])->name('password.email');
 Route::get('/reset-password/{token}', [LoginController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [LoginController::class, 'updatePassword'])->name('password.update');
-
+Route::resource("/reguser",UserController::class);
 Route::middleware(['check.user', 'prevent.back'])->group(function () {
 
 Route::get('/login-blocked', function () {
@@ -31,7 +41,7 @@ Route::get('/login-blocked', function () {
 
 
 Route::get("/dashboard",[LoginController::class,"dashboard"])->name('dashboard');
-Route::resource("/reguser",UserController::class);
+
 Route::resource('buildings', BuildingController::class);
 Route::resource('rooms', RoomController::class);
 Route::resource('bookings', BookingController::class);
@@ -56,17 +66,7 @@ Route::post('/payments/{id}/verify',
     ->name('payments.verify');
 Route::get("/tepro",[BookingController::class,"tenantProfile"])->name("tenant");
 
-Route::get('/book-room/{id}', function ($id) {
 
-    session(['selected_room' => $id]);
-
-    if (Auth::check()) {
-        return redirect()->route('bookings.index');
-    }
-
-    return redirect()->route('signup');
-
-})->name('book.room');
 Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings/profile', [SettingController::class, 'updateProfile'])->name('settings.update-profile');
     Route::put('/settings/password', [SettingController::class, 'updatePassword'])->name('settings.update-password');

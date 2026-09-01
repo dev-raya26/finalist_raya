@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 @section('content')
-<div class="main">
+
     <div class="activity p-3 p-md-4" style="height: 100vh">
         
         <!-- PAGE HEADER -->
@@ -134,7 +134,7 @@
         </div>
 
     </div>
-</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 

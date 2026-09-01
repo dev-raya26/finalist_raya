@@ -202,7 +202,7 @@ class LoginController extends Controller
     // Bado ana attempts
     $remaining = 3 - $attempts;
 
-    return redirect->route('showlogin')->with(
+    return redirect()->route('showlogin')->with(
         'error',
         "Invalid email or password. You have {$remaining} attempts remaining."
     );

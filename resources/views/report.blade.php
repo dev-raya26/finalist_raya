@@ -66,7 +66,6 @@
 
 @section('content')
 
-<div class="main">
     <div class="activity">
 
     <!-- REPORT HEADER -->
@@ -270,7 +269,7 @@
     @endif
 
 </div>
-</div>
+
 
 <!-- PAYMENT MODAL -->
 @if(Auth::user()->role == "customer" && $booking)

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 @section('content')
-<div class="main">
+
 
     <div class="activity">
         <h3>Users Management</h3>
@@ -176,7 +176,7 @@
                 <input type="text" name="lastname" class="form-control" placeholder="Last Name" required>
             </div>
             <div class="col-md-6 mb-2">
-                <input type="text" name="phone" class="form-control" placeholder="Phone" required>
+                <input type="text" name="phone" class="form-control" placeholder="Phone" maxlength='10' milength='10' pattern='[0-9]{10}' required>
             </div>
         </div>
 
@@ -216,7 +216,7 @@
 
         </div>
     </div>
-</div>
+
 <script>
 document.querySelectorAll('.editBtn').forEach(button => {
     button.addEventListener('click', function () {

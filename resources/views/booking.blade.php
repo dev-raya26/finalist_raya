@@ -9,7 +9,7 @@
 }
 </style>
 @section('content')
-<div class="main">
+
     @if(Auth::user()->role == "customer")
 <div class="activity">
 
@@ -409,7 +409,7 @@ data-building-id="{{ $b->id }}">
         </div>
     </div>
 </div>
-</div>
+
 
 <style>
     .building-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }

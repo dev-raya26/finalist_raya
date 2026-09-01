@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div class="main">
+
 <div class="activity">
 
                 <div class="row">
@@ -232,7 +232,6 @@
                 
 
 
-</div>
 </div>
 
 @endsection

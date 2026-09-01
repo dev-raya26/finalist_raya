@@ -45,7 +45,7 @@ class UserController extends Controller
 
     return response()->json($users);
 }
-      public function store(Request $request)
+     public function store(Request $request)
     {
         $request->validate([
     'firstname' => 'required',

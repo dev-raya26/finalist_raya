@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="main">
+
 
     <div class="activity">
         
@@ -239,7 +239,7 @@
 
             </div>
         </div>
-    </div>
+    
 
     @else
 
