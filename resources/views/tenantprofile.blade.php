@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 @section('content')
-<div class="main">
+
     <div class="activity">
         
         {{-- SEHEMU YA 1: PROFAILI YA MPANGAJI --}}
@@ -198,5 +198,5 @@ $daysLeft = (int) \Carbon\Carbon::parse($booking->end_date)
         </div>
     </div>
     
-</div>
+
 @endsection
