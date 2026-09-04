@@ -95,17 +95,13 @@ public function update(Request $request, $id)
 
     if ($request->status == 'approved') {
 
-        // Generate control number
-        $controlNumber = '0772703994';
+        // One payment mobile number for all bookings
+        $paymentNumber = '0772703994';
 
-        // Save control number
-        $booking->control_number = $controlNumber;
-        $booking->save();
-
-        // Get customer email
+        // Customer email
         $email = $booking->customer->email;
 
-        // Send email using Laravel + Resend
+        // Send confirmation email
         Mail::html("
             <h2>House Booking Confirmation</h2>
 
@@ -129,8 +125,11 @@ public function update(Request $request, $id)
 
             <p>
                 <strong>Use this Mobile Number to Pay:</strong>
-                {$controlNumber}<br>
-                <strong>Name: RAYA MOHAMED</strong>
+                {$paymentNumber}
+            </p>
+
+            <p>
+                <strong>Name:</strong> RAYA MOHAMED
             </p>
 
             <p>
@@ -139,6 +138,7 @@ public function update(Request $request, $id)
             </p>
 
             <p>Thank you.</p>
+
         ", function ($message) use ($email) {
 
             $message->to($email)
